@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html class="ibm_cci-mf-layout-new" ng-app="ibmnww" ng-controller="MainCtrl" data-path="<%= generatePage.path %>">
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<!-- pull page vars here -->
+        <title ng-bind="meta.page_title"><%= generatePage.page_title %></title>
+        <meta name="Description" content="<%= generatePage.page_description %>" meta-content="page_description">
+        <meta name="Keywords" content="<%= generatePage.page_keywords %>" meta-content="page_keywords">
+        <meta property="og:title" content="<%= generatePage.og_title %>" meta-content="og_title">
+        <meta property="og:description" content="<%= generatePage.og_description %>" meta-content="og_description">
+        <meta property="og:type" content="article">
+        <meta property="og:url" content="http://www.ibm.com/madewithibm/{{query.str}}">
+        <meta property="og:image" content="">
+        <meta property="og:site_name" content="<%= generatePage.site_nav_label %>" meta-content="metadata.site_nav_label">
+<!-- end page vars -->
+		<meta name="IBM.Country" content="US" />
+		<meta name="DC.Language" scheme="rfc1766" content="en-US" />
+		<meta name="DC.Rights" content="Copyright IBM Corp. 2015"/>
+        <meta name="DC.Date" scheme="iso8601" content="" />
+        <link rel="schema.DC" href="http://purl.org/DC/elements/1.0/" />
+        <link rel="SHORTCUT ICON" href="http://www.ibm.com/favicon.ico" />
+        <meta name="Robots" content="index,follow" />
+        <meta name="Owner" content="" />
+        <meta name="DC.Subject" content="SWB40" scheme="IBM_SubjectTaxonomy" />
+        <meta name="IBM.WTMCategory" content="USEN" scheme="IBM_WTMCategory" />
+        <meta name="DC.Type" content="" scheme="IBM_ContentClassTaxonomy" />
+        <link rel="IBM.Mobile.redirect" href="self" />
+
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <link rel="apple-touch-icon-precomposed" href="" />
+
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="" />
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="" />
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="" />
+
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:site" content="@IBM">
+        <meta name="twitter:creator" content="@IBM">
+        <meta name="twitter:title" content="">
+        <meta name="twitter:description" content="">
+        <meta name="twitter:image" content="http://www.ibm.com/images/portal/H878951C10974G18/tri_logo_black_angle_1.jpg">
+
+        <!-- DO NOT edit these files -->
+        <link href="http://1.www.s81c.com/common/v17e/css/ww.css" rel="stylesheet" title="www" type="text/css" />
+        <script src="http://1.www.s81c.com/common/v17e/js/ww.js" type="text/javascript"></script>
+
+        <!--[if lte IE 8]>
+        <link rel="stylesheet" href="<%= generatePage.relpath %>css/ie8.css">
+        <![endif]-->
+
+        <!--[if gt IE 8]><!-->
+        <link rel="stylesheet" href="<%= generatePage.relpath %>css/main.css"/>
+        <!--<![endif]-->
+
+
+    </head>
+    <body id="ibm-com" class="ibm-type ibm_cci-home-page">
+        <div id="ibm-top" class="ibm-landing-page">
+            <!--! MASTHEAD_BEGIN -->
+            <div id="ibm-masthead" >
+                <div id="ibm-mast-options">
+                    <ul><li id="ibm-geo"><a href="http://www.ibm.com/planetwide/select/selector.html"><span class="ibm-access">Select a country/region: </span>United States</a></li></ul>
+                </div>
+                <div id="ibm-universal-nav">
+                    <ul id="ibm-unav-links"><li id="ibm-home"><a href="http://www.ibm.com/us/en/">IBM®</a></li></ul>
+                    <ul id="ibm-menu-links"><li><a href="http://www.ibm.com/sitemap/us/en/">Site map</a></li></ul>
+                    <div id="ibm-search-module">
+                        <form method="get" action="http://www.ibm.com/Search/" id="ibm-search-form">
+                            <p>
+                                <label for="q"><span class="ibm-access">Search</span></label>
+                                <input id="q" value="" maxlength="100" name="q" type="text"/>
+                                <input name="v" type="hidden" value="17"/>
+                                <input type="hidden" name="en" value="utf"/>
+                                <input name="lang" type="hidden" value="en"/>
+                                <input name="cc" type="hidden" value="us"/>
+                                <input value="Submit" class="ibm-btn-search" id="ibm-search" type="submit"/>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- MASTHEAD_END -->
+
+
+			<div id="ibm-pcon" >
+				<!-- CONTENT_BEGIN -->
+				<div id="ibm-content" class="home">
+					<!-- CONTENT_BODY -->
+					<div id="ibm-content-body">
+						<div id="ibm-content-main">
+							<div>
+
+								<div layout id="layout"></div>
+							</div>
+						</div>
+
+						<!-- CONTENT_BODY_END -->
+					</div>
+				</div>
+				<!-- CONTENT_END -->
+				<!-- NAVIGATION_BEGIN -->
+				<div id="ibm-navigation"></div>
+				<!-- NAVIGATION_END -->
+			</div>
+           
+            <!--div id="ibm-footer-module" ></div-->
+            <div id="ibm-footer" >
+                <h2 class="ibm-access">Footer links</h2>
+                <ul>
+                    <li><a href="http://www.ibm.com/contact/us/en/">Contact</a></li>
+                    <li><a href="http://www.ibm.com/privacy/us/en/">Privacy</a></li>
+                    <li><a href="http://www.ibm.com/legal/us/en/">Terms of use</a></li>
+                    <li><a href="http://www.ibm.com/accessibility/us/en/">Accessibility</a></li>
+                </ul>
+            </div>
+            <!-- FOOTER_END -->
+        </div>
+
+		<!-- build:js js/app.js -->
+		<!-- inject:js -->
+		<!-- endinject -->
+		<!-- endbuild -->
+
+        <div id="ibm-metrics"><script src="//www.ibm.com/common/stats/stats.js" type="text/javascript">//</script></div>
+        <script src="http://www.ibm.com/common/stats/ida_production.js" type="text/javascript">//</script>
+
+
+    </body>
+</html>
