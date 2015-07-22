@@ -21,7 +21,7 @@ gulp.task('getJSON', function(done){
 	//protocol = require('http');
 
 	//remove existing json subdirectories
-	opts.packages.del(jsonDir + '/*/**');
+	opts.packages.del(jsonDir + '/**/index.json');
 
 	//get the sitenav data first
 	doRequest(host + '/sitenav_' + opts.config.localeStr, 'sitenav', function(data){

@@ -1,4 +1,5 @@
-//pre-populate meta data from cms into dist htmls; uses handlebars
+//pre-populate page-level data from cms into dist htmls using lodash
+//TODO: consolidate this and generate-pages into one task
 
 var gulp = require('gulp'),
 	opts = require('../opts'),

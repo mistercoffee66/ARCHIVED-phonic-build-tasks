@@ -1,5 +1,5 @@
 /**
- * save data from staging into local project and format it nice 'n pretty
+ * generate an index.html for each page based on the site map
  */
 var gulp = require('gulp'),
 	opts = require('../opts'),
@@ -10,6 +10,7 @@ gulp.task('generate-pages', function(done){
 
 	var PAGES = ['/'];//this array represents all the desired index PAGES, starting w the homepage
 
+
 	getSitenav(function(data){
 		getPagesList(data.items[0]);
 		cleanPages(function(){
@@ -19,6 +20,10 @@ gulp.task('generate-pages', function(done){
 		});
 	});
 
+	/**
+	 * get sitenav data
+	 * @param cb
+	 */
 	function getSitenav(cb) {
 
 		opts.fs.readFile(opts.src + '/json/sitenav.json', {encoding: 'utf8'}, function(err, data){
@@ -80,6 +85,10 @@ gulp.task('generate-pages', function(done){
 
 	}
 
+	/**
+	 * figure out top-level and sub-level pages to get site structure
+	 * @param item object from sitenav that contains all the stuff we want
+	 */
 	function getPagesList(item) {
 
 		if (item.children && item.children.length > 0) {
@@ -88,10 +97,15 @@ gulp.task('generate-pages', function(done){
 					PAGES.push(item.children[i].url);
 				}
 				getPagesList(item.children[i]); //recursive for children of children
+				//TODO: refactor to allow for infinite levels of children
 			}
 		}
 	}
 
+	/**
+	 * generate the pages from a template
+	 * @param cb
+	 */
 	function createPages(cb) {
 
 		var template = opts.fs.readFileSync(opts.path.join(__dirname,'../index_template.html'), {encoding: 'utf8'}).toString(),
@@ -121,16 +135,18 @@ gulp.task('generate-pages', function(done){
 				return str;
 			};
 
+			// populate some stuff in each page
 			contents = compiled({
 				generatePage: {
 					path: path,
 					relpath: relpath(),
-					page_title: '\<%= pageData.page_title %\>',
+					page_title: '\<%= pageData.page_title %\>', // this means it will get compiled with page-level data in the dist build
 					page_description: '\<%= pageData.page_description %\>',
 					page_keywords: '\<%= pageData.page_keywords %\>',
 					og_title: '\<%= pageData.og_title %\>',
 					og_description: '\<%= pageData.og_description %\>',
-					site_nav_label: '\<%= pageData.site_nav_label %\>'
+					site_nav_label: '\<%= pageData.site_nav_label %\>',
+					canonical_url: '\<%= pageData.canonical_url %\>'
 				}
 			});
 
