@@ -20,5 +20,5 @@ gulp.task('imagemin', function(){
 							})]
 					}
 			))
-			.pipe(gulp.dest(opts.dist));
+			.pipe(gulp.dest(opts.dist + opts.imgDir));
 });
