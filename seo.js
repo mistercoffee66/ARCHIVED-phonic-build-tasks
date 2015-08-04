@@ -47,7 +47,15 @@ function getHtml() {
 					return document.getElementById('ibm-content-main');
 				});
 				text = body.innerHTML.replace(/<script[^>]*>([\s\S]*?)<\/script>/gm,'');
-				console.log(text);
+
+				if (text.length < 1) {
+					console.log('[phantomjs log]' + ' ' + 'Scrape empty!');
+				}
+
+				else {
+					console.log(text);
+				}
+
 				phantom.exit();
 			}
 			else {

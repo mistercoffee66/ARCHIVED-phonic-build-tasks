@@ -52,7 +52,7 @@ gulp.task('seo',function(done){
 		command = 'phantomjs seo.js ' + env + ' ' + page;
 		exec(command, function(error, stdout, stderr){
 			if (stdout.indexOf('[phantomjs log]') === 0) {
-				opts.logMsg(stdout);
+				opts.logMsg('************ ERROR: ' + stdout);
 			}
 			else {
 				injectSeo(page, stdout);
