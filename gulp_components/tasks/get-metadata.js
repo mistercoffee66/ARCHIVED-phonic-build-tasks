@@ -41,7 +41,7 @@ gulp.task('getMetaData', function(done){
 
 		if (item.children && item.children.length > 0) {
 			for (var i = 0; i < item.children.length; i++) {
-				if (!item.children[i].section_only || item.children[i].section_only !== 'true') {
+				if (typeof item.children[i].section_only === 'undefined' || item.children[i].section_only === 'false') {
 					PAGES.push(item.children[i].url);
 				}
 				getPagesList(item.children[i]); //recursive for children of children
