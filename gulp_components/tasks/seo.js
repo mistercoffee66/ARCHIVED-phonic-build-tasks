@@ -90,8 +90,14 @@ gulp.task('seo',function(done){
 		opts.logMsg('injecting seo into ' + destDir + 'index.html...');
 
 		gulp.src(destDir + 'index.html')
+<<<<<<< HEAD
 				.pipe(opts.plugins.replace(/<noscript.id="seo"[^>]*>([\s\S]*?)<\/noscript>/gm,'')) //remove any previous instances of noscript block
 				.pipe(opts.plugins.injectString.before('<div id="ibm-footer">', '<noscript id="seo">'+ contents + '</noscript>\n'))
 				.pipe(gulp.dest(destDir));
+=======
+			.pipe(opts.plugins.replace(/<noscript.id="seo"[^>]*>([\s\S]*?)<\/noscript>/gm,'')) //remove any previous instances of noscript block
+			.pipe(opts.plugins.injectString.before('<div id="ibm-footer">', '<noscript id="seo">'+ contents + '</noscript>\n'))
+			.pipe(gulp.dest(destDir));
+>>>>>>> e35cd26036073f23176f164e9161b8d633705958
 	}
 });
