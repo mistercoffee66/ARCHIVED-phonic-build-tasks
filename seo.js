@@ -1,9 +1,8 @@
 var system = require('system'),
-	page = require('webpage').create(),
-	fs = require('fs'),
-	config = require('./config'),
-	dir = '_tmp-noscript/',
-	env, host, body, fileName, text, ready, t, c, i= 0, path;
+		page = require('webpage').create(),
+		fs = require('fs'),
+		config = require('../../config'),
+		env, host, body, fileName, text, ready, t, c, i= 0, path;
 
 if (system.args[1] === 'stage') {
 	page.settings.userName = 'ogilvy';
@@ -11,7 +10,7 @@ if (system.args[1] === 'stage') {
 	env = 'stage';
 }
 else {
-	env = 'prod'
+	env = 'prod';
 }
 
 if (system.args[2] && system.args[2].length > 0) {
@@ -27,8 +26,8 @@ host = config.siteUrl[env];
 getHtml();
 
 function getHtml() {
-
 	//var c = 0;
+
 	var ready = false;
 
 	page.open(host + path, function() {
