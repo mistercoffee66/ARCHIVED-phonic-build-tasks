@@ -2,7 +2,6 @@ var system = require('system'),
 		page = require('webpage').create(),
 		fs = require('fs'),
 		config = require('../../config'),
-		dir = '_tmp-noscript/',
 		env, host, body, fileName, text, ready, t, c, i= 0, path;
 
 if (system.args[1] === 'stage') {
