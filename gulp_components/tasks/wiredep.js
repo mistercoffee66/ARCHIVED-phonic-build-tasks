@@ -10,7 +10,7 @@ gulp.task('wiredep', function() {
 
 	opts.logMsg('\n*****' + 'begin wiredep task' + '*****\n');
 
-	var bowerFiles = opts.packages.bowerFiles({dev: true});
+	var bowerFiles = opts.packages.bowerFiles({dev: false});
 	if (bowerFiles.js) {
 
 		// strip out jquery 2.x bc IBM already includes 1.8x for IE8
