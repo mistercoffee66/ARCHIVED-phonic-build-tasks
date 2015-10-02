@@ -88,7 +88,7 @@ gulp.task('seo',function(done){
 
 		gulp.src(destDir + 'index.html')
 			.pipe(opts.plugins.replace(/<noscript.id="seo"[^>]*>([\s\S]*?)<\/noscript>/gm,'')) //remove any previous instances of noscript block
-			.pipe(opts.plugins.injectString.before('<div id="ibm-footer">', '<noscript id="seo">'+ contents + '</noscript>/n'))
+			.pipe(opts.plugins.injectString.before('<div id="ibm-footer">', '<noscript id="seo">'+ contents + '</noscript>\n'))
 			.pipe(gulp.dest(destDir));
 	}
 });
