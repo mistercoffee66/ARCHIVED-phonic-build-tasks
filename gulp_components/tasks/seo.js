@@ -49,10 +49,15 @@ gulp.task('seo',function(done){
 	function runPhantom(page) {
 
 		opts.logMsg('scraping ' + page + '...allowing 5s for it load...');
-		command = 'phantomjs seo.js ' + env + ' ' + page;
+		command = 'phantomjs bower_components/phonic-build-tasks/seo.js ' + env + ' ' + page;
 		exec(command, function(error, stdout, stderr){
-			if (stdout.indexOf('[phantomjs log]') === 0) {
-				opts.logMsg('************ ERROR: ' + stdout);
+			if (stderr) {
+				opts.logErr('************ ERROR: ' + stderr);
+				done();
+			}
+			else if (stdout.indexOf('[phantomjs log]') === 0) {
+				opts.logErr('************ ERROR: ' + stdout);
+				done();
 			}
 			else {
 				injectSeo(page, stdout);
@@ -73,7 +78,7 @@ gulp.task('seo',function(done){
 		var destDir;
 
 		if (path === '/') {
-			destDir = opts.dist + path;;
+			destDir = opts.dist + path;
 		}
 		else {
 			destDir = opts.dist + '/' + path;
@@ -85,9 +90,10 @@ gulp.task('seo',function(done){
 		});
 
 		opts.logMsg('injecting seo into ' + destDir + 'index.html...');
+		opts.logMsg(contents);
 
 		gulp.src(destDir + 'index.html')
-				.pipe(opts.plugins.replace(/<noscript id="seo"[^>]*>([\s\S]*?)<\/noscript>/gm,'')) //remove any previous instances of noscript block
+				.pipe(opts.plugins.replace(/<noscript.id="seo"[^>]*>([\s\S]*?)<\/noscript>/gm,'')) //remove any previous instances of noscript block
 				.pipe(opts.plugins.injectString.before('<div id="ibm-footer">', '<noscript id="seo">'+ contents + '</noscript>\n'))
 				.pipe(gulp.dest(destDir));
 	}
