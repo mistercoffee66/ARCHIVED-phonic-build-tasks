@@ -50,7 +50,7 @@ gulp.task('seo',function(done){
 
 		opts.logMsg('scraping ' + page + '...allowing 5s for it load...');
 		command = 'phantomjs bower_components/phonic-build-tasks/seo.js ' + env + ' ' + page;
-		exec(command, function(error, stdout, stderr){
+		exec(command, {maxBuffer: 300*1024} ,function(error, stdout, stderr){
 			if (stderr) {
 				opts.logErr('************ ERROR: ' + stderr);
 				done();
@@ -93,7 +93,7 @@ gulp.task('seo',function(done){
 		opts.logMsg(contents);
 
 		gulp.src(destDir + 'index.html')
-				.pipe(opts.plugins.replace(/<noscript.id="seo"[^>]*>([\s\S]*?)<\/noscript>/gm,'')) //remove any previous instances of noscript block
+				.pipe(opts.plugins.replace(/<noscript id="seo"[^>]*>([\s\S]*?)<\/noscript>/gm,'')) //remove any previous instances of noscript block
 				.pipe(opts.plugins.injectString.before('<div id="ibm-footer">', '<noscript id="seo">'+ contents + '</noscript>\n'))
 				.pipe(gulp.dest(destDir));
 	}
