@@ -3,7 +3,7 @@
  */
 
 var gulp = require('gulp'),
-	opts = require('../opts');
+		opts = require('../opts');
 
 //main task in this sequence
 gulp.task('seo',function(done){
@@ -11,11 +11,11 @@ gulp.task('seo',function(done){
 	opts.logMsg('\n*****' + 'begin seo task' + '*****\n');
 
 	var sys = require('sys'),
-		exec = require('child_process').exec,
-		args = opts.packages.yargs.argv,
-		PAGES = ['/'],
-		command, env,
-		i= 0;
+			exec = require('child_process').exec,
+			args = opts.packages.yargs.argv,
+			PAGES = ['/'],
+			command, env,
+			i= 0;
 
 	getSitenav(function(data){
 
@@ -87,8 +87,8 @@ gulp.task('seo',function(done){
 		opts.logMsg('injecting seo into ' + destDir + 'index.html...');
 
 		gulp.src(destDir + 'index.html')
-			.pipe(opts.plugins.replace(/<noscript.id="seo"[^>]*>([\s\S]*?)<\/noscript>/gm,'')) //remove any previous instances of noscript block
-			.pipe(opts.plugins.injectString.before('<div id="ibm-footer">', '<noscript id="seo">'+ contents + '</noscript>\n'))
-			.pipe(gulp.dest(destDir));
+				.pipe(opts.plugins.replace(/<noscript id="seo"[^>]*>([\s\S]*?)<\/noscript>/gm,'')) //remove any previous instances of noscript block
+				.pipe(opts.plugins.injectString.before('<div id="ibm-footer">', '<noscript id="seo">'+ contents + '</noscript>\n'))
+				.pipe(gulp.dest(destDir));
 	}
 });
