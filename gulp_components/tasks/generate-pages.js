@@ -2,8 +2,8 @@
  * generate an index.html for each page based on the site map
  */
 var gulp = require('gulp'),
-	opts = require('../opts'),
-	_ = require('lodash');
+		opts = require('../opts'),
+		_ = require('lodash');
 
 gulp.task('generate-pages', function(done){
 	opts.logMsg('\n*****' + 'begin generate-PAGES task' + '*****\n');
@@ -26,6 +26,8 @@ gulp.task('generate-pages', function(done){
 	 */
 	function getSitenav(cb) {
 
+		opts.logMsg('getting pages list from sitenav.json' + '\n');
+
 		opts.fs.readFile(opts.src + '/json/sitenav.json', {encoding: 'utf8'}, function(err, data){
 			if (err) throw err;
 			cb(JSON.parse(data));
@@ -38,38 +40,28 @@ gulp.task('generate-pages', function(done){
 
 		opts.logMsg('deleting previous index files');
 
-			opts.packages.nodeDir.subdirs(opts.src, function(err,subdirs){ //get all directories
+		opts.packages.nodeDir.subdirs(opts.src, function(err,subdirs){ //get all directories
 
-				if (err) throw err;
+			if (err) throw err;
 
-				var i = 0;
+			var i = 0;
 
-				subdirs.reverse(); //want to check inner directories first
+			subdirs.reverse(); //want to check inner directories first
 
-				//console.log(subdirs);
+			//console.log(subdirs);
 
-				deleteEmpty();
+			deleteEmpty();
 
-				function deleteEmpty() {
-					var dir = subdirs[i];
-					//opts.logMsg(dir);
-					opts.fs.readdir(dir, function(err,files) {
+			function deleteEmpty() {
+				var dir = subdirs[i];
+				//opts.logMsg(dir);
+				opts.fs.readdir(dir, function(err,files) {
 
-						if (err) throw err;
+					if (err) throw err;
 
-						if (files.length < 1 || (files.length === 1 && files[0] === 'index.html')) {
+					if (files.length < 1 || (files.length === 1 && files[0] === 'index.html')) {
 
-							opts.packages.del(dir,function(){
-								i++;
-								if (i === subdirs.length) {
-									cb();
-								}
-								else {
-									deleteEmpty();
-								}
-							});
-						}
-						else {
+						opts.packages.del(dir,function(){
 							i++;
 							if (i === subdirs.length) {
 								cb();
@@ -77,10 +69,20 @@ gulp.task('generate-pages', function(done){
 							else {
 								deleteEmpty();
 							}
+						});
+					}
+					else {
+						i++;
+						if (i === subdirs.length) {
+							cb();
 						}
-					});
-				}
-			});
+						else {
+							deleteEmpty();
+						}
+					}
+				});
+			}
+		});
 
 
 	}
@@ -108,8 +110,26 @@ gulp.task('generate-pages', function(done){
 	 */
 	function createPages(cb) {
 
-		var template = opts.fs.readFileSync(opts.path.join(__dirname,'../index_template.html'), {encoding: 'utf8'}).toString(),
-			compiled;
+		var template_file = './index_template.html',
+				template_file_default = opts.path.join(__dirname,'../index_template.html'),
+				template, compiled;
+
+		opts.logMsg('using template ' + template_file);
+
+		try {
+			template = opts.fs.readFileSync(template_file, {encoding: 'utf8'}).toString();
+		}
+		catch(err) {
+			opts.logErr('Project-specific template not found at ' + template_file);
+			opts.logMsg('using default template ' + template_file_default + '\n');
+
+			try {
+				template = opts.fs.readFileSync(template_file_default, {encoding: 'utf8'}).toString();
+			}
+			catch(err) {
+				opts.logErr(err);
+			}
+		}
 
 		compiled = _.template(template);
 
@@ -157,8 +177,5 @@ gulp.task('generate-pages', function(done){
 		cb();
 
 	}
-
-
-
 
 });
