@@ -7,7 +7,7 @@ var gulp = require('gulp'),
 
 gulp.task('imagemin', function(){
 	opts.logMsg('\n*****' + 'begin imagemin' + '*****\n');
-	return gulp.src([opts.src + opts.imgDir + '/**/*'])
+	return gulp.src([opts.src + opts.imgDir + '/**/*.{jpg,jpeg,png,svg}'])
 			.pipe(opts.plugins.imagemin(
 					{
 						use: [
