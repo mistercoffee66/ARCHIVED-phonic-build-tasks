@@ -1,2 +1,2 @@
 # phonic-build-tasks
-v1
+v1.0.4
