@@ -158,15 +158,24 @@ gulp.task('generate-pages', function(done){
 			// populate some stuff in each page
 			contents = compiled({
 				generatePage: {
+					//these are sitewide
 					path: path,
 					relpath: relpath(),
+					locale: opts.config.localeStr,
+					country: opts.config.country,
+					language: opts.config.language,
+
+					//these are page specific and not known at this step
 					page_title: '\<%= pageData.page_title %\>', // this means it will get compiled with page-level data in the dist build
 					page_description: '\<%= pageData.page_description %\>',
 					page_keywords: '\<%= pageData.page_keywords %\>',
 					og_title: '\<%= pageData.og_title %\>',
+					og_image: '\<%= pageData.og_image %\>',
+					og_url: '\<%= pageData.og_url %\>',
 					og_description: '\<%= pageData.og_description %\>',
 					site_nav_label: '\<%= pageData.site_nav_label %\>',
-					canonical_url: '\<%= pageData.canonical_url %\>'
+					chat_script: '\<%= pageData.chat_script %\>'
+
 				}
 			});
 

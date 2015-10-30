@@ -68,6 +68,10 @@ gulp.task('getMetaData', function(done){
 			pageData: data.rows[0].doc
 		};
 
+		if (typeof contents.pageData.chat_enabled === 'undefined' || contents.pageData.chat_enabled === 'true') {
+			contents.pageData.chat_script = '';
+		}
+
 		opts.logMsg('injecting metadata into: ' + opts.dist + file + 'index.html');
 
 		gulp.src(opts.dist + file + 'index.html')

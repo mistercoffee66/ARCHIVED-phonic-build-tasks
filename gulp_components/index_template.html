@@ -5,20 +5,21 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<!-- pull page vars here -->
+        <!-- pull page vars here -->
+        <meta name="IBM.Country" content="<%= generatePage.country %>" />
+        <meta name="DC.Language" scheme="rfc1766" content="<%= generatePage.language %>" />
         <title ng-bind="meta.page_title"><%= generatePage.page_title %></title>
         <meta name="Description" content="<%= generatePage.page_description %>" meta-content="page_description">
         <meta name="Keywords" content="<%= generatePage.page_keywords %>" meta-content="page_keywords">
-        <meta property="og:title" content="<%= generatePage.og_title %>" meta-content="og_title">
-        <meta property="og:description" content="<%= generatePage.og_description %>" meta-content="og_description">
+        <meta property="og:title" content="<%= generatePage.og_title %>">
+        <meta property="og:description" content="<%= generatePage.og_description %>">
         <meta property="og:type" content="article">
-        <meta property="og:url" content="http://www.ibm.com/madewithibm/{{query.str}}">
-        <meta property="og:image" content="">
+        <meta property="og:url" content="<%= generatePage.og_url %>">
+        <meta property="og:image" content="<%= generatePage.og_image %>">
         <meta property="og:site_name" content="<%= generatePage.site_nav_label %>" meta-content="metadata.site_nav_label">
-        <link rel="canonical" href="http://www.ibm.com/madewithibm/cloud/" />
-<!-- end page vars -->
-		<meta name="IBM.Country" content="US" />
-		<meta name="DC.Language" scheme="rfc1766" content="en-US" />
+        <link rel="canonical" href="<%= generatePage.canonical_url %>" meta-content="canonical_url" />
+        <!-- end page vars -->
+
 		<meta name="DC.Rights" content="Copyright IBM Corp. 2015"/>
         <meta name="DC.Date" scheme="iso8601" content="" />
         <link rel="schema.DC" href="http://purl.org/DC/elements/1.0/" />
@@ -56,6 +57,9 @@
         <link rel="stylesheet" href="<%= generatePage.relpath %>css/main.css"/>
         <!--<![endif]-->
 
+        <!--chat script-->
+        <%= generatePage.chat_script %>
+        <!--/chat script-->
 
     </head>
     <body id="ibm-com" class="ibm-type ibm_cci-home-page">
@@ -66,8 +70,24 @@
                     <ul><li id="ibm-geo"><a href="http://www.ibm.com/planetwide/select/selector.html"><span class="ibm-access">Select a country/region: </span>United States</a></li></ul>
                 </div>
                 <div id="ibm-universal-nav">
-                    <ul id="ibm-unav-links"><li id="ibm-home"><a href="http://www.ibm.com/us/en/">IBM®</a></li></ul>
-                    <ul id="ibm-menu-links"><li><a href="http://www.ibm.com/sitemap/us/en/">Site map</a></li></ul>
+                    <ul id="ibm-unav-links"><li id="ibm-home"><a href="http://www.ibm.com/<%= generatePage.country %>/<%= generatePage.language %>/">IBMÂ®</a></li>
+                    </ul>
+
+                    <ul id="ibm-menu-links">
+                        <li role="presentation">
+                            <a role="button" href="//www.ibm.com/big-data/<%= generatePage.country %>/<%= generatePage.language %>/big-data-and-analytics/?lnk=bua" data-sectionid="analytics">Analytics</a>
+                        </li>
+                        <li role="presentation"><a role="button" href="//www.ibm.com/cloud/?lnk=bucl" data-sectionid="cloud">Cloud</a></li>
+                        <li role="presentation"><a role="button" href="//www.ibm.com/commerce/<%= generatePage.country %>/<%= generatePage.language %>/?lnk=buco" data-sectionid="commerce">Commerce</a></li>
+                        <li role="presentation"><a role="button" href="//www.ibm.com/systems/" data-sectionid="itinfrastructure">IT Infrastructure</a></li>
+                        <li role="presentation"><a role="button" href="//www.ibm.com/mobilefirst/?lnk=bumf" data-sectionid="mobile">MobileFirst</a></li>
+                        <li role="presentation"><a role="button" href="//www.ibm.com/security/?lnk=buse" data-sectionid="security">Security</a></li>
+                        <li role="presentation"><a role="button" href="//www.ibm.com/watson/?lnk=buwa" data-sectionid="watson">Watson</a></li>
+                    </ul>
+
+
+                    <ul aria-label="Product categories" role="toolbar" class="ibm-masthead-categories"></ul>
+
                     <div id="ibm-search-module">
                         <form method="get" action="http://www.ibm.com/Search/" id="ibm-search-form">
                             <p>
@@ -76,7 +96,7 @@
                                 <input name="v" type="hidden" value="17"/>
                                 <input type="hidden" name="en" value="utf"/>
                                 <input name="lang" type="hidden" value="en"/>
-                                <input name="cc" type="hidden" value="us"/>
+                                <input name="cc" type="hidden" value="<%= generatePage.country %>"/>
                                 <input value="Submit" class="ibm-btn-search" id="ibm-search" type="submit"/>
                             </p>
                         </form>
@@ -111,10 +131,10 @@
             <div id="ibm-footer" >
                 <h2 class="ibm-access">Footer links</h2>
                 <ul>
-                    <li><a href="http://www.ibm.com/contact/us/en/">Contact</a></li>
-                    <li><a href="http://www.ibm.com/privacy/us/en/">Privacy</a></li>
-                    <li><a href="http://www.ibm.com/legal/us/en/">Terms of use</a></li>
-                    <li><a href="http://www.ibm.com/accessibility/us/en/">Accessibility</a></li>
+                    <li><a href="http://www.ibm.com/contact/<%= generatePage.country %>/<%= generatePage.language %>/">Contact</a></li>
+                    <li><a href="http://www.ibm.com/privacy/<%= generatePage.country %>/<%= generatePage.language %>/">Privacy</a></li>
+                    <li><a href="http://www.ibm.com/legal/<%= generatePage.country %>/<%= generatePage.language %>/">Terms of use</a></li>
+                    <li><a href="http://www.ibm.com/accessibility/<%= generatePage.country %>/<%= generatePage.language %>/">Accessibility</a></li>
                 </ul>
             </div>
             <!-- FOOTER_END -->
