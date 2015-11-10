@@ -27,5 +27,5 @@ gulp.task('default', function(callback) {
 });
 
 gulp.task('dist', function(callback) {
-	opts.packages.runSequence('setup', ['dev', 'clean'], 'move', 'usemin', 'imagemin', 'injectjsDist', 'htmlmin', 'seo', 'getMetaData', callback);
+	opts.packages.runSequence('setup', ['dev', 'clean'], 'move', 'usemin', 'imagemin', 'injectjsDist', 'htmlmin', 'getMetaData', 'seo', callback);
 });

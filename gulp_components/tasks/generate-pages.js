@@ -8,11 +8,13 @@ var gulp = require('gulp'),
 gulp.task('generate-pages', function(done){
 	opts.logMsg('\n*****' + 'begin generate-PAGES task' + '*****\n');
 
-	var PAGES = ['/'];//this array represents all the desired index PAGES, starting w the homepage
+	var PAGES = ['/'],//this array represents all the desired index PAGES, starting w the homepage
+			sitenav = {};
 
 
 	getSitenav(function(data){
-		getPagesList(data.items[0]);
+		sitenav = data;
+		getPagesList(sitenav.items[0]);
 		cleanPages(function(){
 			createPages(function(){
 				done();
@@ -164,6 +166,7 @@ gulp.task('generate-pages', function(done){
 					locale: opts.config.localeStr,
 					country: opts.config.country,
 					language: opts.config.language,
+					site_owner: sitenav.site_owner,
 
 					//these are page specific and not known at this step
 					page_title: '\<%= pageData.page_title %\>', // this means it will get compiled with page-level data in the dist build
