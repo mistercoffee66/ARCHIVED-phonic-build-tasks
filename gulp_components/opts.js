@@ -3,21 +3,24 @@ var gutil = require('gulp-util');
 module.exports = {
 	plugins : require('gulp-load-plugins')({pattern: 'gulp-*'}),
 	packages: require('gulp-load-plugins')({pattern: ['*','!gulp-*']}),
-	argv: require('yargs')().argv,
+	//argv: require('yargs')().argv,
 	fs: require('fs-extra'),
 	path: require('path'),
-	src: './src',
-	dist: './dist',
-	cssDir: '/css',
-	imgDir: '/i',
-	jsDir: '/js',
-	homepage: '/index.html',
-	categoryPages: '/*/**/index.html',
-	ngTemplates: '/templates/**/*.html',
-	config: require(process.cwd() + '/config'),
-	staticAssets : ['/**/*.{css,map,woff,eot,ttf,json,gif}'],
+	paths: {
+		src: './src',
+		tmp: './tmp',
+		dist: './dist',
+		cssDir: '/css',
+		imgDir: '/i',
+		jsDir: '/js',
+		lessDir : ['/less'],
+		homepage: '/index.html',
+		categoryPages: '/*/**/index.html',
+		ngTemplates: '/templates/**/*.html',
+		staticAssets : ['/**/*.{css,map,woff,eot,ttf,json,gif}']
+	},	
+	//config: require(process.cwd() + '/config'),
 	getProjectTitle: function(cb) {
-
 		require('read-package-json')('./package.json',function(err,data){
 			var title = '';
 
