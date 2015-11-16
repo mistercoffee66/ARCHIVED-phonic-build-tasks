@@ -2,19 +2,21 @@
  * generate an index.html for each page based on the site map
  */
 var gulp = require('gulp'),
-		opts = require('../opts'),
-		_ = require('lodash');
+	opts = require('../opts'),
+	packages = require('../packages'),
+	plugins = require('../plugins'),
+	utils = require('../utils'),
+	_ = packages.lodash;
 
 gulp.task('generate-pages', function(done){
-	opts.logMsg('\n*****' + 'begin generate-PAGES task' + '*****\n');
+	utils.logMsg('\n*****' + 'begin generate-pages task' + '*****\n');
 
-	var PAGES = ['/'],//this array represents all the desired index PAGES, starting w the homepage
-			sitenav = {};
+	var dest = process.env.buildDirectory,
+		PAGES = ['/'];//this array represents all the desired index PAGES, starting w the homepage
 
 
 	getSitenav(function(data){
-		sitenav = data;
-		getPagesList(sitenav.items[0]);
+		getPagesList(data.items[0]);
 		cleanPages(function(){
 			createPages(function(){
 				done();
@@ -28,9 +30,7 @@ gulp.task('generate-pages', function(done){
 	 */
 	function getSitenav(cb) {
 
-		opts.logMsg('getting pages list from sitenav.json' + '\n');
-
-		opts.fs.readFile(opts.src + '/json/sitenav.json', {encoding: 'utf8'}, function(err, data){
+		opts.fs.readFile(dest + '/json/sitenav.json', {encoding: 'utf8'}, function(err, data){
 			if (err) throw err;
 			cb(JSON.parse(data));
 		});
@@ -40,30 +40,40 @@ gulp.task('generate-pages', function(done){
 	//remove existing index PAGES
 	function cleanPages(cb) {
 
-		opts.logMsg('deleting previous index files');
+		utils.logMsg('deleting previous index files');
 
-		opts.packages.nodeDir.subdirs(opts.src, function(err,subdirs){ //get all directories
+			packages.nodeDir.subdirs(dest, function(err,subdirs){ //get all directories
 
-			if (err) throw err;
+				if (err) throw err;
 
-			var i = 0;
+				var i = 0;
 
-			subdirs.reverse(); //want to check inner directories first
+				subdirs.reverse(); //want to check inner directories first
 
-			//console.log(subdirs);
+				//console.log(subdirs);
 
-			deleteEmpty();
+				deleteEmpty();
 
-			function deleteEmpty() {
-				var dir = subdirs[i];
-				//opts.logMsg(dir);
-				opts.fs.readdir(dir, function(err,files) {
+				function deleteEmpty() {
+					var dir = subdirs[i];
+					//utils.logMsg(dir);
+					opts.fs.readdir(dir, function(err,files) {
 
-					if (err) throw err;
+						if (err) throw err;
 
-					if (files.length < 1 || (files.length === 1 && files[0] === 'index.html')) {
+						if (files.length < 1 || (files.length === 1 && files[0] === 'index.html')) {
 
-						opts.packages.del(dir,function(){
+							opts.fs.remove(dir,function(){
+								i++;
+								if (i === subdirs.length) {
+									cb();
+								}
+								else {
+									deleteEmpty();
+								}
+							});
+						}
+						else {
 							i++;
 							if (i === subdirs.length) {
 								cb();
@@ -71,21 +81,10 @@ gulp.task('generate-pages', function(done){
 							else {
 								deleteEmpty();
 							}
-						});
-					}
-					else {
-						i++;
-						if (i === subdirs.length) {
-							cb();
 						}
-						else {
-							deleteEmpty();
-						}
-					}
-				});
-			}
-		});
-
+					});
+				}
+			});
 
 	}
 
@@ -112,26 +111,8 @@ gulp.task('generate-pages', function(done){
 	 */
 	function createPages(cb) {
 
-		var template_file = './index_template.html',
-				template_file_default = opts.path.join(__dirname,'../index_template.html'),
-				template, compiled;
-
-		opts.logMsg('using template ' + template_file);
-
-		try {
-			template = opts.fs.readFileSync(template_file, {encoding: 'utf8'}).toString();
-		}
-		catch(err) {
-			opts.logErr('Project-specific template not found at ' + template_file);
-			opts.logMsg('using default template ' + template_file_default + '\n');
-
-			try {
-				template = opts.fs.readFileSync(template_file_default, {encoding: 'utf8'}).toString();
-			}
-			catch(err) {
-				opts.logErr(err);
-			}
-		}
+		var template = opts.fs.readFileSync(opts.path.join(__dirname,'../index_template.html'), {encoding: 'utf8'}).toString(),
+			compiled;
 
 		compiled = _.template(template);
 
@@ -142,10 +123,10 @@ gulp.task('generate-pages', function(done){
 			path = PAGES[i];
 
 			if (path === '/') {
-				file = opts.src + '/index.html';
+				file = dest + '/index.html';
 			}
 			else {
-				file = opts.src + '/' + path+ 'index.html';
+				file = dest + '/' + path+ 'index.html';
 			}
 
 			level = path === '/' ? 0 : (path.split('/')).length - 1;
@@ -160,34 +141,27 @@ gulp.task('generate-pages', function(done){
 			// populate some stuff in each page
 			contents = compiled({
 				generatePage: {
-					//these are sitewide
 					path: path,
 					relpath: relpath(),
-					locale: opts.config.localeStr,
-					country: opts.config.country,
-					language: opts.config.language,
-					site_owner: sitenav.site_owner,
-
-					//these are page specific and not known at this step
 					page_title: '\<%= pageData.page_title %\>', // this means it will get compiled with page-level data in the dist build
 					page_description: '\<%= pageData.page_description %\>',
 					page_keywords: '\<%= pageData.page_keywords %\>',
 					og_title: '\<%= pageData.og_title %\>',
-					og_image: '\<%= pageData.og_image %\>',
-					og_url: '\<%= pageData.og_url %\>',
 					og_description: '\<%= pageData.og_description %\>',
 					site_nav_label: '\<%= pageData.site_nav_label %\>',
-					chat_script: '\<%= pageData.chat_script %\>'
-
+					canonical_url: '\<%= pageData.canonical_url %\>'
 				}
 			});
 
 			opts.fs.outputFileSync(file, contents);
-			opts.logMsg('html file saved: ' + file);
+			utils.logMsg('html file saved: ' + file);
 		}
 
 		cb();
 
 	}
+
+
+
 
 });

@@ -2,66 +2,44 @@
  * save data from staging into local project and format it nice 'n pretty
  */
 var gulp = require('gulp'),
-	opts = require('../opts');
+		opts = require('../opts'),
+		packages = require('../packages'),
+		plugins = require('../plugins'),
+		utils = require('../utils');
 
-gulp.task('getJSON', function(done){
-	opts.logMsg('\n*****' + 'begin getJSON task' + '*****\n');
 
-	var pages = ['/'],//this array represents all the desired json files, starting w the homepage
-		jsonDir = opts.src + '/json/',
-		env = opts.argv.prod ? 'prod' : 'stage',
+gulp.task('get-json', function(done){
+
+	var dest = process.env.buildDirectory,
+		PAGES = ['/'],//this array represents all the desired json files, starting w the homepage
 		complete = -1,
-		host, protocol;
+		jsonDir, host, protocol;
 
-	host = opts.config.dataHost[env];
+	host = opts.config.dataHost.stage;
 	protocol = host.indexOf('https') > -1 ? require('https') : require('http');
+	jsonDir = dest + opts.paths.jsonDir + '/';
 
-	//swap this in to test
-	//host = 'http://127.0.0.1/phonic-startersite/SourceCode/_test_json';
-	//protocol = require('http');
+	utils.logMsg('\n*****' + 'begin get-json:dev task' + '*****\n');
+	utils.logMsg('datahost = ' + host);
 
 	//remove existing json subdirectories
-	opts.packages.del(jsonDir + '/**/index.json');
+	opts.fs.remove(jsonDir + '/**/index.json');
 
 	//get the sitenav data first
 	doRequest(host + '/sitenav_' + opts.config.localeStr, 'sitenav', function(data){
 
-	//swap this in to test
-	//doRequest('/sitenav.json', 'sitenav', function(data){
+		getPagesList(data.items[0], function(){
 
-		//get an item's children and put them in pages array
-		function getPagesList(item, cb) {
+			for (var j = 0; j < PAGES.length; j++) {
 
-			if (item.children && item.children.length > 0) {
-				for (var i = 0; i < item.children.length; i++) {
-					if (!item.children[i].section_only || item.children[i].section_only === 'false') {
-						pages.push(item.children[i].url);
+				doRequest(host + '/_design/site/_view/by_url?key=["'+ (j === 0 ? '/' : PAGES[j]) + '","' + opts.config.localeStr + '"]&include_docs=true', PAGES[j], function(data){
+
+					if (complete === (PAGES.length)) {
+						done();
 					}
-					getPagesList(item.children[i]); //recursive for children of children
-				}
+				});
 			}
-
-		}
-
-		//run this first for the homepage and do the child pages on callback
-
-		getPagesList(data.items[0]);
-
-		for (var j = 0; j < pages.length; j++) {
-
-
-			doRequest(host + '/_design/site/_view/by_url?key=["'+ (j === 0 ? '/' : pages[j]) + '","' + opts.config.localeStr + '"]&include_docs=true', pages[j], function(data){
-
-			//swap this in to test
-			//doRequest((pages[j] === '/' ? '' : '/') + pages[j] + 'index.json', pages[j], function(data){
-
-				if (complete === (pages.length)) {
-					done();
-				}
-			});
-		}
-
-
+		});
 	});
 
 	function doRequest(dataUrl, page, cb) {
@@ -78,7 +56,7 @@ gulp.task('getJSON', function(done){
 			outputPath = jsonDir + page + 'index.json';
 		}
 
-		opts.logMsg('getting json from ' + env + ': ' +dataUrl);
+		//utils.logMsg('getting json from : ' + dataUrl);
 
 
 		protocol.get(dataUrl, function(res){
@@ -92,17 +70,15 @@ gulp.task('getJSON', function(done){
 
 				if (res.statusCode == 200) {
 
-					//var wstream = opts.fs.createWriteStream(outputPath);
-
 					try {
 						data  = JSON.parse(body);
 					} catch (e) {
-						opts.logErr('json parse error: ' + e);
+						utils.logErr('json parse error: ' + e);
 					}
 
 					opts.fs.outputJSON(outputPath,data);
 
-					opts.logMsg('json file saved: ' + outputPath);
+					utils.logMsg('json file saved: ' + outputPath);
 					complete++;
 					if (cb) {
 						cb(data);
@@ -110,14 +86,33 @@ gulp.task('getJSON', function(done){
 				}
 
 				else {
-					opts.logErr('json request responded with error code ' + res.statusCode);
+					utils.logErr('json request responded with error code ' + res.statusCode);
 				}
 
 			}).on('error', function(e) {
-				opts.logErr('error getting json for ' + host + dataUrl + ': ', e);
+				utils.logErr('error getting json for ' + host + dataUrl + ': ', e);
 			});
 		});
 
 	}
 
+	function getPagesList(item, cb) {
+
+		//get an item's children and put them in PAGES array
+
+		if (item.children && item.children.length > 0) {
+			for (var i = 0; i < item.children.length; i++) {
+				if (!item.children[i].section_only || item.children[i].section_only === 'false') {
+					PAGES.push(item.children[i].url);
+				}
+				getPagesList(item.children[i]); //recursive for children of children
+			}
+		}
+
+		if (cb) {
+			cb();
+		}
+
+	}
 });
+
