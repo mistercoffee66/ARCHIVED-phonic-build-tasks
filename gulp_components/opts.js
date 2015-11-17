@@ -11,10 +11,11 @@ module.exports = {
 		imgDir: '/i',
 		jsDir: '/js',
 		jsonDir: '/json',
-		lessDir : ['/less'],
+		lessDir : '/less',
+		modulesDir : '/modules',
 		homepage: '/index.html',
 		categoryPages: '/*/**/index.html',
-		ngTemplates: '/templates/**/*.html',
+		ngTemplates: '/modules/**/*.html',
 		staticAssets : ['/**/*.{css,map,woff,eot,ttf,json,gif}']
 	},
 	config: require(process.cwd() + '/config')

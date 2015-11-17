@@ -11,7 +11,7 @@ var gulp = require('gulp'),
 gulp.task('generate-pages', function(done){
 	utils.logMsg('\n*****' + 'begin generate-pages task' + '*****\n');
 
-	var dest = process.env.buildDirectory,
+	var dest = process.env.buildDirectory || opts.paths.tmp,
 		PAGES = ['/'];//this array represents all the desired index PAGES, starting w the homepage
 
 

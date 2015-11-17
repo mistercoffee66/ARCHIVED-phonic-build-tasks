@@ -1,154 +1,141 @@
+
+
+
 <!DOCTYPE html>
-<html class="ibm_cci-mf-layout-new" ng-app="ibmnww" ng-controller="MainCtrl" data-path="<%= generatePage.path %>">
-    <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>
-
-        <!-- pull page vars here -->
-        <meta name="IBM.Country" content="<%= generatePage.country %>" />
-        <meta name="DC.Language" scheme="rfc1766" content="<%= generatePage.language %>" />
-        <title ng-bind="meta.page_title"><%= generatePage.page_title %></title>
-        <meta name="Description" content="<%= generatePage.page_description %>" meta-content="page_description">
-        <meta name="Keywords" content="<%= generatePage.page_keywords %>" meta-content="page_keywords">
-        <meta property="og:title" content="<%= generatePage.og_title %>">
-        <meta property="og:description" content="<%= generatePage.og_description %>">
-        <meta property="og:type" content="article">
-        <meta property="og:url" content="<%= generatePage.og_url %>">
-        <meta property="og:image" content="<%= generatePage.og_image %>">
-        <meta property="og:site_name" content="<%= generatePage.site_nav_label %>" meta-content="metadata.site_nav_label">
-        <link rel="canonical" href="<%= generatePage.canonical_url %>" meta-content="canonical_url" />
-        <meta name="owner" content="<%= generatePage.site_owner %>">
-        <!-- end page vars -->
-
-		<meta name="DC.Rights" content="Copyright IBM Corp. 2015"/>
-        <meta name="DC.Date" scheme="iso8601" content="" />
-        <link rel="schema.DC" href="http://purl.org/DC/elements/1.0/" />
-        <link rel="SHORTCUT ICON" href="http://www.ibm.com/favicon.ico" />
-        <meta name="Robots" content="index,follow" />
-        <meta name="Owner" content="" />
-        <meta name="DC.Subject" content="SWB40" scheme="IBM_SubjectTaxonomy" />
-        <meta name="IBM.WTMCategory" content="USEN" scheme="IBM_WTMCategory" />
-        <meta name="DC.Type" content="" scheme="IBM_ContentClassTaxonomy" />
-        <link rel="IBM.Mobile.redirect" href="self" />
-
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <link rel="apple-touch-icon-precomposed" href="" />
-
-        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="" />
-        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="" />
-        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="" />
-
-        <meta name="twitter:card" content="summary">
-        <meta name="twitter:site" content="@IBM">
-        <meta name="twitter:creator" content="@IBM">
-        <meta name="twitter:title" content="">
-        <meta name="twitter:description" content="">
-        <meta name="twitter:image" content="http://www.ibm.com/images/portal/H878951C10974G18/tri_logo_black_angle_1.jpg">
-
-        <!-- DO NOT edit these files -->
-        <link href="//1.www.s81c.com/common/v17e/css/ww.css" rel="stylesheet" title="www" type="text/css" />
-        <script src="//1.www.s81c.com/common/v17e/js/ww.js" type="text/javascript"></script>
-
-        <!--[if lte IE 8]>
-        <link rel="stylesheet" href="<%= generatePage.relpath %>css/ie8.css">
-        <![endif]-->
-
-        <!--[if gt IE 8]><!-->
-        <link rel="stylesheet" href="<%= generatePage.relpath %>css/main.css"/>
-        <!--<![endif]-->
-
-        <!--chat script-->
-        <%= generatePage.chat_script %>
-        <!--/chat script-->
-
-    </head>
-    <body id="ibm-com" class="ibm-type ibm_cci-home-page">
-        <div id="ibm-top" class="ibm-landing-page">
-            <!--! MASTHEAD_BEGIN -->
-            <div id="ibm-masthead" >
-                <div id="ibm-mast-options">
-                    <ul><li id="ibm-geo"><a href="http://www.ibm.com/planetwide/select/selector.html"><span class="ibm-access">Select a country/region: </span>United States</a></li></ul>
-                </div>
-                <div id="ibm-universal-nav">
-                    <ul id="ibm-unav-links"><li id="ibm-home"><a href="http://www.ibm.com/<%= generatePage.country %>/<%= generatePage.language %>/">IBMÂ®</a></li>
-                    </ul>
-
-                    <ul id="ibm-menu-links">
-                        <li role="presentation">
-                            <a role="button" href="//www.ibm.com/big-data/<%= generatePage.country %>/<%= generatePage.language %>/big-data-and-analytics/?lnk=bua" data-sectionid="analytics">Analytics</a>
-                        </li>
-                        <li role="presentation"><a role="button" href="//www.ibm.com/cloud/?lnk=bucl" data-sectionid="cloud">Cloud</a></li>
-                        <li role="presentation"><a role="button" href="//www.ibm.com/commerce/<%= generatePage.country %>/<%= generatePage.language %>/?lnk=buco" data-sectionid="commerce">Commerce</a></li>
-                        <li role="presentation"><a role="button" href="//www.ibm.com/systems/" data-sectionid="itinfrastructure">IT Infrastructure</a></li>
-                        <li role="presentation"><a role="button" href="//www.ibm.com/mobilefirst/?lnk=bumf" data-sectionid="mobile">MobileFirst</a></li>
-                        <li role="presentation"><a role="button" href="//www.ibm.com/security/?lnk=buse" data-sectionid="security">Security</a></li>
-                        <li role="presentation"><a role="button" href="//www.ibm.com/watson/?lnk=buwa" data-sectionid="watson">Watson</a></li>
-                    </ul>
+<html lang="en-US">
+<head>
+    <meta charset="utf-8"/>
 
 
-                    <ul aria-label="Product categories" role="toolbar" class="ibm-masthead-categories"></ul>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="//www.ibm.com/favicon.ico" />
 
-                    <div id="ibm-search-module">
-                        <form method="get" action="http://www.ibm.com/Search/" id="ibm-search-form">
-                            <p>
-                                <label for="q"><span class="ibm-access">Search</span></label>
-                                <input id="q" value="" maxlength="100" name="q" type="text"/>
-                                <input name="v" type="hidden" value="17"/>
-                                <input type="hidden" name="en" value="utf"/>
-                                <input name="lang" type="hidden" value="en"/>
-                                <input name="cc" type="hidden" value="<%= generatePage.country %>"/>
-                                <input value="Submit" class="ibm-btn-search" id="ibm-search" type="submit"/>
-                            </p>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!-- MASTHEAD_END -->
+    <link rel="canonical" href="http://www.ibm.com/link_label_3.html" />
+    <link rel="canonical" href="http://www.ibm.com/sample_tab_2_2.html" />
+    <link rel="canonical" href="http://www.ibm.com/sample_tab_1_1.html" />
+    <meta name="geo.country" content="US" />
+    <meta name="dcterms.rights" content="© Copyright IBM Corp. 2015" />
+    <meta name="dcterms.date" content="2015-11-30" />
+    <meta name="description" content="seo description" />
+    <meta name="keywords" content="seo keywords" />
+    <meta name="robots" content="index, follow" /> <meta name="Canonical" value="http://www.ibm.com/sublink_1_1_1.html" /><meta name="Canonical" value="http://www.ibm.com/sublink_2_1_2.html" /><meta name="Canonical" value="http://www.ibm.com/sublink_3_1_3.html" /><meta name="Canonical" value="http://www.ibm.com/sublink_label_1_4.html" />
+    <title>Title</title>
 
 
-			<div id="ibm-pcon" >
-				<!-- CONTENT_BEGIN -->
-				<div id="ibm-content" class="home">
-					<!-- CONTENT_BODY -->
-					<div id="ibm-content-body" class="{{meta.template}}">
-						<div id="ibm-content-main">
-							<div>
+    <script>
+        digitalData = {
+            "page":{
+                "category":{
+                    "primaryCategory":"Category 1"
+                },
+                "pageInfo":{
+                    "effectiveDate":"2015-11-30",
+                    "expiryDate":"2017-11-30",
+                    "language":"en-US",
+                    "publishDate":"2015-11-30",
+                    "publisher":"IBM Corporation",
+                    "version":"v18",
+                    "ibm":{
+                        "contentDelivery":"REPLACE",
+                        "contentProducer":"REPLACE",
+                        "country":"US",
+                        "industry":"Industry 1",
+                        "owner":"Michael Baryla\/Raleigh\/IBM",
+                        "subject":"Subject 1",
+                        "type":"Type 1"
+                    },
+                    "keywords":"seo keywords",
+                    "description":"seo description"
+                }
+            }
+        };
+    </script>
+    <script src="//www.ibm.com/common/stats/ida_stats.js"></script>
+    <link href="//1.www.s81c.com/common/v18/css/www.css" rel="stylesheet" />
+    <script src="//1.www.s81c.com/common/v18/js/www.js"></script>
 
-								<div layout id="layout"></div>
-							</div>
-						</div>
 
-						<!-- CONTENT_BODY_END -->
-					</div>
-				</div>
-				<!-- CONTENT_END -->
-				<!-- NAVIGATION_BEGIN -->
-				<div id="ibm-navigation"></div>
-				<!-- NAVIGATION_END -->
-			</div>
-           
-            <!--div id="ibm-footer-module" ></div-->
-            <div id="ibm-footer" >
-                <h2 class="ibm-access">Footer links</h2>
-                <ul>
-                    <li><a href="http://www.ibm.com/contact/<%= generatePage.country %>/<%= generatePage.language %>/">Contact</a></li>
-                    <li><a href="http://www.ibm.com/privacy/<%= generatePage.country %>/<%= generatePage.language %>/">Privacy</a></li>
-                    <li><a href="http://www.ibm.com/legal/<%= generatePage.country %>/<%= generatePage.language %>/">Terms of use</a></li>
-                    <li><a href="http://www.ibm.com/accessibility/<%= generatePage.country %>/<%= generatePage.language %>/">Accessibility</a></li>
-                </ul>
-            </div>
-            <!-- FOOTER_END -->
+    <script type="text/javascript">
+        IBMCore.common.util.config.set({
+            "masthead":{
+                "type":"default"
+            },
+            "footer":{
+                "type":"alternate"
+            }
+        });
+    </script>
+
+    <link rel="stylesheet" href="<%= generatePage.relpath %>css/main.css">
+
+</head>
+<body id="ibm-com" class="ibm-type">
+<div id="ibm-top" class="ibm-landing-page">
+
+    <!-- MASTHEAD_BEGIN -->
+    <div id="ibm-masthead" role="banner" aria-label="IBM">
+        <div id="ibm-mast-options">
+            <ul role="toolbar" aria-labelledby="ibm-masthead">
+                <li id="ibm-geo" role="presentation"><a href="http://www.ibm.com/planetwide/select/selector.html" role="button" aria-label="United States selected - Choose a country">United States</a></li>
+                <li id="ibm-language" role="presentation"><span class="ibm-active" role="button" aria-disabled="true">English</span> <a href="http://www.ibm.com/us/en/" lang="en-US" role="button">English</a></li>
+            </ul>
         </div>
+        <div id="ibm-universal-nav">
 
-		<!-- build:js js/app.js -->
-		<!-- inject:js -->
-		<!-- endinject -->
-		<!-- endbuild -->
+            <nav role="navigation" aria-label="IBM">
+                <div id="ibm-home"><a href="http://www.ibm.com/us/en/">IBM®</a></div>
+                <ul id="ibm-menu-links" role="toolbar" aria-label="Site map">
+                    <li><a href="http://www.ibm.com/sitemap/us/en/">Site map</a></li>
+                </ul>
+            </nav>
 
-        <div id="ibm-metrics"><script src="//www.ibm.com/common/stats/stats.js" type="text/javascript">//</script></div>
-        <script src="//www.ibm.com/common/stats/ida_production.js" type="text/javascript">//</script>
+            <div id="ibm-search-module" role="search" aria-labelledby="ibm-masthead">
+                <form id="ibm-search-form" action="http://www.ibm.com/Search/" method="get">
+                    <p>
+                        <label for="q">IBM</label>
+                        <input type="text" maxlength="100" value="" placeholder="Search" name="q" id="q" aria-label="Search"/>
+                        <input type="hidden" value="18" name="v"/>
+                        <input type="hidden" value="utf" name="en"/>
+                        <input type="hidden" value="en" name="lang"/>
+                        <input type="hidden" value="us" name="cc"/>
+                        <input type="submit" id="ibm-search" class="ibm-btn-search" value="Submit"/>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- MASTHEAD_END -->
 
 
-    </body>
+    <div id="ibm-content-wrapper">
+
+
+
+        <div layout id="layout"></div>
+
+
+
+    </div>
+
+    <!-- FOOTER_BEGIN -->
+    <div id="ibm-footer-module"><!-- Dynamic footer links inserted here inside a <section> --></div>
+
+
+    <footer role="contentinfo" aria-label="IBM">
+        <div id="ibm-footer">
+            <ul>
+                <li><a href="http://www.ibm.com/contact/us/en/">Contact</a></li>
+                <li><a href="http://www.ibm.com/privacy/us/en/">Privacy</a></li>
+                <li><a href="http://www.ibm.com/legal/us/en/">Terms of use</a></li>
+                <li><a href="http://www.ibm.com/accessibility/us/en/">Accessibility</a></li>
+            </ul>
+        </div>
+    </footer>
+    <!-- FOOTER_END -->
+
+</div>
+
+<script src="<%= generatePage.relpath %>js/_lib.min.js"></script>
+<script src="<%= generatePage.relpath %>js/app.min.js"></script>
+</body>
 </html>

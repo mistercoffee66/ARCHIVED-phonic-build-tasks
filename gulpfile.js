@@ -13,12 +13,16 @@ gulp.task('log1', function(done){
 });
 
 gulp.task('dev', gulp.series(
-		'wiredep'
+		'set-build-directory:dev',
+		'app-config',
+		'wiredep',
+		'ng-templates',
+		'concat-js:dev',
+		'less:dev'
 ));
 
 gulp.task('setup', gulp.series(
 		'set-build-directory:dev',
-		'app-config',
 		'get-json',
 		'generate-pages'
 ));

@@ -12,7 +12,7 @@ gulp.task('wiredep', function() {
 
 	utils.logMsg('\n*****' + 'begin wiredep task' + '*****\n');
 
-	var dest = process.env.buildDirectory;
+	var dest = process.env.buildDirectory || opts.paths.tmp;
 
 	var files = [],
 		l;
@@ -26,8 +26,6 @@ gulp.task('wiredep', function() {
 	}
 
 	return gulp.src(files)
-		.pipe(plugins.ngAnnotate())
-		.pipe(plugins.uglify())
-		.pipe(plugins.concat('_lib.js'))
-		.pipe(gulp.dest(dest + opts.paths.jsDir));
+		.pipe(plugins.concat('bower.js'))
+		.pipe(gulp.dest(dest + opts.paths.jsDir + '/_lib'));
 });

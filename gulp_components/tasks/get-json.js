@@ -10,7 +10,7 @@ var gulp = require('gulp'),
 
 gulp.task('get-json', function(done){
 
-	var dest = process.env.buildDirectory,
+	var dest = process.env.buildDirectory || opts.paths.tmp,
 		PAGES = ['/'],//this array represents all the desired json files, starting w the homepage
 		complete = -1,
 		jsonDir, host, protocol;
