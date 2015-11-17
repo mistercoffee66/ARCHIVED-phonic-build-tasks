@@ -34,6 +34,7 @@ gulp.task('concat-js:dev:app',function(){
 	])
 			//.pipe(plugins.print())
 			.pipe(plugins.sourcemaps.init())
+			.pipe(plugins.sort())
 			.pipe(plugins.concat('app.min.js'))
 			.pipe(plugins.sourcemaps.write('.'))
 			.pipe(gulp.dest(dest + opts.paths.jsDir));

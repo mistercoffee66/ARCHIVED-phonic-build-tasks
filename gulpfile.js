@@ -18,7 +18,8 @@ gulp.task('dev', gulp.series(
 		'wiredep',
 		'ng-templates',
 		'concat-js:dev',
-		'less:dev'
+		'less:dev',
+		'serve'
 ));
 
 gulp.task('setup', gulp.series(
@@ -27,4 +28,5 @@ gulp.task('setup', gulp.series(
 		'generate-pages'
 ));
 
+gulp.task('default',gulp.series('dev'));
 

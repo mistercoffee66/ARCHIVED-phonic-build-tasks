@@ -15,6 +15,7 @@ gulp.task('ng-templates',function(){
 
 	return gulp.src(opts.paths.src + opts.paths.ngTemplates)
 			.pipe(plugins.angularTemplatecache({
+				module: 'phonic',
 				filename: "app/templates.js"
 			}))
 			.pipe(gulp.dest(dest + opts.paths.jsDir));
