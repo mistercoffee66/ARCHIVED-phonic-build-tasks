@@ -18,7 +18,7 @@ gulp.task('concat-js:dev:lib',function(){
 	])
 			//.pipe(plugins.print())
 			.pipe(plugins.sourcemaps.init())
-			.pipe(plugins.concat('_lib.js'))
+			.pipe(plugins.concat('_lib.min.js'))
 			.pipe(plugins.sourcemaps.write('.'))
 			.pipe(gulp.dest(dest + opts.paths.jsDir));
 });
@@ -34,7 +34,7 @@ gulp.task('concat-js:dev:app',function(){
 	])
 			//.pipe(plugins.print())
 			.pipe(plugins.sourcemaps.init())
-			.pipe(plugins.concat('app.js'))
+			.pipe(plugins.concat('app.min.js'))
 			.pipe(plugins.sourcemaps.write('.'))
 			.pipe(gulp.dest(dest + opts.paths.jsDir));
 });
