@@ -11,9 +11,9 @@ var gulp = require('gulp'),
 gulp.task('get-json', function(done){
 
 	var dest = process.env.buildDirectory || opts.paths.tmp,
-		PAGES = ['/'],//this array represents all the desired json files, starting w the homepage
-		complete = -1,
-		jsonDir, host, protocol;
+			PAGES = ['/'],//this array represents all the desired json files, starting w the homepage
+			complete = -1,
+			jsonDir, host, protocol;
 
 	host = opts.config.dataHost.stage;
 	protocol = host.indexOf('https') > -1 ? require('https') : require('http');
@@ -27,6 +27,11 @@ gulp.task('get-json', function(done){
 
 	//get the sitenav data first
 	doRequest(host + '/sitenav_' + opts.config.localeStr, 'sitenav', function(data){
+
+		if (!data.items || data.items.length < 1) {
+			utils.logErr('no pages defined in sitenav data!');
+			return false;
+		}
 
 		getPagesList(data.items[0], function(){
 
@@ -56,7 +61,7 @@ gulp.task('get-json', function(done){
 			outputPath = jsonDir + page + 'index.json';
 		}
 
-		//utils.logMsg('getting json from : ' + dataUrl);
+		utils.logMsg('getting json from : ' + dataUrl);
 
 
 		protocol.get(dataUrl, function(res){
@@ -90,8 +95,8 @@ gulp.task('get-json', function(done){
 				}
 
 			}).on('error', function(e) {
-				utils.logErr('error getting json for ' + host + dataUrl + ': ', e);
-			});
+						utils.logErr('error getting json for ' + host + dataUrl + ': ', e);
+					});
 		});
 
 	}
