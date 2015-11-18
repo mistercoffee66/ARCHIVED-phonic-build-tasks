@@ -2,7 +2,7 @@
 
 
 <!DOCTYPE html>
-<html lang="en-US" ng-app="phonic" ng-controller="MainCtrl">
+<html lang="en-US" ng-app="phonic" ng-controller="MainCtrl" data-path="<%= generatePage.path %>">
 <head>
     <meta charset="utf-8"/>
 
@@ -58,7 +58,7 @@
     <script type="text/javascript">
         IBMCore.common.util.config.set({
             "masthead":{
-                "type":"default"
+                "type":"alternate"
             },
             "footer":{
                 "type":"alternate"

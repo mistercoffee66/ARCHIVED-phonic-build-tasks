@@ -13,10 +13,10 @@ gulp.task('concat-js:dev:lib',function(){
 	var dest = process.env.buildDirectory || opts.paths.tmp;
 
 	return gulp.src([
-		dest + opts.paths.jsDir + '/_lib/bower.js',
-		opts.paths.src + opts.paths.jsDir + '/_lib/**/*.js'
-	])
-			//.pipe(plugins.print())
+				dest + opts.paths.jsDir + '/_lib/bower.js',
+				opts.paths.src + opts.paths.jsDir + '/_lib/**/*.js'
+			])
+		//.pipe(plugins.print())
 			.pipe(plugins.sourcemaps.init())
 			.pipe(plugins.concat('_lib.min.js'))
 			.pipe(plugins.sourcemaps.write('.'))
@@ -28,11 +28,12 @@ gulp.task('concat-js:dev:app',function(){
 	var dest = process.env.buildDirectory || opts.paths.tmp;
 
 	return gulp.src([
-		dest + opts.paths.jsDir + '/app/templates.js',
-		opts.paths.src + '/**/*.js',
-		'!' + opts.paths.src + opts.paths.jsDir + '/_lib/**/*.js'
-	])
-			//.pipe(plugins.print())
+				dest + opts.paths.jsDir + '/app/templates.js',
+				dest + opts.paths.jsDir + '/app/environment-config.js',
+				opts.paths.src + '/**/*.js',
+				'!' + opts.paths.src + opts.paths.jsDir + '/_lib/**/*.js'
+			])
+		//.pipe(plugins.print())
 			.pipe(plugins.sourcemaps.init())
 			.pipe(plugins.sort())
 			.pipe(plugins.concat('app.min.js'))
@@ -42,25 +43,25 @@ gulp.task('concat-js:dev:app',function(){
 
 /*gulp.task('concat-js:dist:lib',function(){
 
-	var dest = process.env.buildDirectory || opts.paths.tmp;
+ var dest = process.env.buildDirectory || opts.paths.tmp;
 
-	return gulp.src(opts.paths.src + opts.paths.jsDir + '/_lib/!**!/!*.js')
-			.pipe(plugins.concat('_lib.js'))
-			.pipe(plugins.ngAnnotate())
-			.pipe(plugins.uglify())
-			.pipe(gulp.dest(dest + opts.paths.jsDir));
-});
+ return gulp.src(opts.paths.src + opts.paths.jsDir + '/_lib/!**!/!*.js')
+ .pipe(plugins.concat('_lib.js'))
+ .pipe(plugins.ngAnnotate())
+ .pipe(plugins.uglify())
+ .pipe(gulp.dest(dest + opts.paths.jsDir));
+ });
 
-gulp.task('concat-js:dist:app',function(){
+ gulp.task('concat-js:dist:app',function(){
 
-	var dest = process.env.buildDirectory || opts.paths.tmp;
+ var dest = process.env.buildDirectory || opts.paths.tmp;
 
-	return gulp.src(opts.paths.src + opts.paths.modulesDir + '/!**!/!*.js')
-			.pipe(plugins.concat('app.js'))
-			.pipe(plugins.ngAnnotate())
-			.pipe(plugins.uglify())
-			.pipe(gulp.dest(dest + opts.paths.jsDir));
-});*/
+ return gulp.src(opts.paths.src + opts.paths.modulesDir + '/!**!/!*.js')
+ .pipe(plugins.concat('app.js'))
+ .pipe(plugins.ngAnnotate())
+ .pipe(plugins.uglify())
+ .pipe(gulp.dest(dest + opts.paths.jsDir));
+ });*/
 
 gulp.task('concat-js:dev', gulp.parallel(
 		function(done){
