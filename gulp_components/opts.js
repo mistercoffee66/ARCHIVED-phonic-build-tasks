@@ -8,7 +8,7 @@ module.exports = {
 		tmp: './tmp',
 		dist: './dist',
 		cssDir: '/css',
-		imgDir: '/i',
+		imgDir: '/img',
 		jsDir: '/js',
 		jsonDir: '/json',
 		lessDir : '/less',
@@ -16,7 +16,7 @@ module.exports = {
 		homepage: '/index.html',
 		categoryPages: '/*/**/index.html',
 		ngTemplates: '/modules/**/*.html',
-		staticAssets : ['/**/*.{css,map,woff,eot,ttf,json,gif}']
+		staticAssetsDir : '/static-assets'
 	},
 	config: require(process.cwd() + '/config')
 };

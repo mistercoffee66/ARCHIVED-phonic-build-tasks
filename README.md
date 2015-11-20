@@ -1,2 +1,2 @@
 # phonic-build-tasks
-v1.0.4
+v2.0.0 for IBM v18
