@@ -7,8 +7,10 @@ var gulp = require('gulp'),
 		plugins = require('../plugins'),
 		utils = require('../utils');
 
-
 gulp.task('get-json', function(done){
+
+	utils.logMsg('\n*****' + 'begin get-json:dev task' + '*****\n');
+	utils.logMsg('datahost = ' + host);
 
 	var dest = process.env.buildDirectory || opts.paths.tmp,
 			PAGES = ['/'],//this array represents all the desired json files, starting w the homepage
@@ -18,9 +20,6 @@ gulp.task('get-json', function(done){
 	host = opts.config.dataHost.stage;
 	protocol = host.indexOf('https') > -1 ? require('https') : require('http');
 	jsonDir = dest + opts.paths.jsonDir + '/';
-
-	utils.logMsg('\n*****' + 'begin get-json:dev task' + '*****\n');
-	utils.logMsg('datahost = ' + host);
 
 	//remove existing json subdirectories
 	opts.fs.remove(jsonDir + '/**/index.json');

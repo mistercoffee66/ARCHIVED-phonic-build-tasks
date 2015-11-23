@@ -1,5 +1,5 @@
 /**
- * generate an index.html for each page based on the site map
+ * generate an index.html for each page based on the site map and populate it w metadata
  */
 var gulp = require('gulp'),
 		opts = require('../opts'),
@@ -12,95 +12,79 @@ gulp.task('generate-pages', function(done){
 	utils.logMsg('\n*****' + 'begin generate-pages task' + '*****\n');
 
 	var dest = process.env.buildDirectory || opts.paths.tmp,
-			PAGES = ['/'];//this array represents all the desired index PAGES, starting w the homepage
+			PAGES = ['/'],//this array represents all the desired json files, starting w the homepage
+			complete = 0,
+			siteData, template;
 
+	host = opts.config.dataHost.stage;
+	protocol = host.indexOf('https') > -1 ? require('https') : require('http');
 
-	getSitenav(function(data){
-		getPagesList(data.items[0]);
-		cleanPages(function(){
-			createPages(function(){
-				done();
+	//remove existing index.htmls
+	opts.fs.remove(dest + '/**/index.html', function(){
+		//get the sitenav data first
+		getJSON(dest + opts.paths.jsonDir + '/sitenav.json', function(data){
+
+			siteData = data;
+
+			if (!data.items || data.items.length < 1) {
+				utils.logErr('no pages defined in sitenav data!');
+				return false;
+			}
+
+			//get a list of all pages
+			getPagesList(data.items[0], function(){
+				getTemplate(function(){
+					//make all the pages from a template
+					for (var j = 0; j < PAGES.length; j++) {
+						createPage(PAGES[j], function(){
+							if (complete === (PAGES.length)) {
+								done();
+							}
+						});
+					}
+				});
 			});
 		});
 	});
 
-	/**
-	 * get sitenav data
-	 * @param cb
-	 */
-	function getSitenav(cb) {
 
-		opts.fs.readFile(dest + '/json/sitenav.json', {encoding: 'utf8'}, function(err, data){
+
+
+
+	/**
+	 * get data from json
+	 * @param cb
+	 * @param path
+	 */
+	function getJSON(path, cb) {
+
+		opts.fs.readFile(path, {encoding: 'utf8'}, function(err, data){
 			if (err) throw err;
 			cb(JSON.parse(data));
 		});
 	}
 
+	function getTemplate(cb) {
 
-	//remove existing index PAGES
-	function cleanPages(cb) {
+		var template_file = './index_template.html',
+			template_file_default = opts.path.join(__dirname,'../index_template.html');
 
-		utils.logMsg('deleting previous index files');
+		utils.logMsg('using template ' + template_file);
 
-		packages.nodeDir.subdirs(dest, function(err,subdirs){ //get all directories
+		try {
+			template = opts.fs.readFileSync(template_file, {encoding: 'utf8'}).toString();
+			cb();
+		}
+		catch(err) {
+			utils.logErr('Project-specific template not found at ' + template_file);
+			utils.logMsg('using default template ' + template_file_default + '\n');
 
-			if (err) throw err;
-
-			var i = 0;
-
-			subdirs.reverse(); //want to check inner directories first
-
-			//console.log(subdirs);
-
-			deleteEmpty();
-
-			function deleteEmpty() {
-				var dir = subdirs[i];
-				//utils.logMsg(dir);
-				opts.fs.readdir(dir, function(err,files) {
-
-					if (err) throw err;
-
-					if (files.length < 1 || (files.length === 1 && files[0] === 'index.html')) {
-
-						opts.fs.remove(dir,function(){
-							i++;
-							if (i === subdirs.length) {
-								cb();
-							}
-							else {
-								deleteEmpty();
-							}
-						});
-					}
-					else {
-						i++;
-						if (i === subdirs.length) {
-							cb();
-						}
-						else {
-							deleteEmpty();
-						}
-					}
-				});
+			try {
+				template = opts.fs.readFileSync(template_file_default, {encoding: 'utf8'}).toString();
+				cb();
 			}
-		});
-
-	}
-
-	/**
-	 * figure out top-level and sub-level pages to get site structure
-	 * @param item object from sitenav that contains all the stuff we want
-	 */
-	function getPagesList(item) {
-
-		if (item.children && item.children.length > 0) {
-			for (var i = 0; i < item.children.length; i++) {
-				if (!item.children[i].section_only || item.children[i].section_only !== 'true') {
-					PAGES.push(item.children[i].url);
-				}
-				getPagesList(item.children[i]); //recursive for children of children
-				//TODO: refactor to allow for infinite levels of children
+			catch(err) {
+				utils.logErr(err);
 			}
 		}
 	}
@@ -109,45 +93,30 @@ gulp.task('generate-pages', function(done){
 	 * generate the pages from a template
 	 * @param cb
 	 */
-	function createPages(cb) {
+	function createPage(page,cb) {
 
-		var template_file = './index_template.html',
-				template_file_default = opts.path.join(__dirname,'../index_template.html'),
-				template, compiled;
+		var compiled = _.template(template),
+			outputPath;
 
-		utils.logMsg('using template ' + template_file);
-
-		try {
-			template = opts.fs.readFileSync(template_file, {encoding: 'utf8'}).toString();
+		if (page === '/') {
+			outputPath = '/index';
 		}
-		catch(err) {
-			utils.logErr('Project-specific template not found at ' + template_file);
-			utils.logMsg('using default template ' + template_file_default + '\n');
-
-			try {
-				template = opts.fs.readFileSync(template_file_default, {encoding: 'utf8'}).toString();
-			}
-			catch(err) {
-				utils.logErr(err);
-			}
+		else {
+			outputPath = '/' + page + 'index';
 		}
 
-		compiled = _.template(template);
+		getJSON(dest + opts.paths.jsonDir + outputPath + '.json', function(data){
 
-		for (var i= 0; i < PAGES.length; i++) {
+			var file, level, relpath, contents, pageData;
 
-			var path, file, level, relpath, contents;
+			pageData = data.rows[0].doc;
 
-			path = PAGES[i];
-
-			if (path === '/') {
-				file = dest + '/index.html';
-			}
-			else {
-				file = dest + '/' + path+ 'index.html';
+			if (typeof pageData.chat_enabled === 'undefined' || pageData.chat_enabled !== 'true' ) {
+				pageData.chat_script = '';
 			}
 
-			level = path === '/' ? 0 : (path.split('/')).length - 1;
+			file = dest + outputPath + '.html';
+			level = outputPath === '/' ? 0 : (outputPath.split('/')).length - 1;
 			relpath = function() {
 				var str = '';
 				for (var i=0;i < level; i++) {
@@ -156,30 +125,48 @@ gulp.task('generate-pages', function(done){
 				return str;
 			};
 
+			var reference = JSON.stringify({siteData: siteData, pageData: pageData});
+
 			// populate some stuff in each page
 			contents = compiled({
 				generatePage: {
-					path: path,
+					path: outputPath,
 					relpath: relpath(),
-					page_title: '\<%= pageData.page_title %\>', // this means it will get compiled with page-level data in the dist build
-					page_description: '\<%= pageData.page_description %\>',
-					page_keywords: '\<%= pageData.page_keywords %\>',
-					og_title: '\<%= pageData.og_title %\>',
-					og_description: '\<%= pageData.og_description %\>',
-					site_nav_label: '\<%= pageData.site_nav_label %\>',
-					canonical_url: '\<%= pageData.canonical_url %\>'
+					pageData: pageData,
+					siteData: siteData,
+					reference_config: JSON.stringify({config: opts.config}),
+					reference_siteData: JSON.stringify({siteData: siteData}),
+					reference_pageData: JSON.stringify({pageData: pageData})
 				}
 			});
 
 			opts.fs.outputFileSync(file, contents);
 			utils.logMsg('html file saved: ' + file);
-		}
 
-		cb();
+			complete++;
+			cb();
+		});
 
 	}
 
+	/**
+	 * figure out top-level and sub-level pages to get site structure
+	 * @param item object from sitenav that contains all the stuff we want
+	 */
+	function getPagesList(item, cb) {
 
+		if (item.children && item.children.length > 0) {
+			for (var i = 0; i < item.children.length; i++) {
+				if (!item.children[i].section_only || item.children[i].section_only === 'false') {
+					PAGES.push(item.children[i].url);
+				}
+				getPagesList(item.children[i]); //recursive for children of children
+				//TODO: refactor to allow for infinite levels of children
+			}
+		}
 
-
+		if (cb) {
+			cb();
+		}
+	}
 });
