@@ -45,5 +45,12 @@ gulp.task('serve', function(done){
 		));
 	}
 
+	else {
+		gulp.watch(
+				opts.paths.dist + '/**/*.html',
+				browserSync.reload
+		);
+	}
+
 	done();
 });

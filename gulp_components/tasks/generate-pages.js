@@ -21,6 +21,7 @@ gulp.task('generate-pages', function(done){
 
 	//remove existing index.htmls
 	opts.fs.remove(dest + '/**/index.html', function(){
+
 		//get the sitenav data first
 		getJSON(dest + opts.paths.jsonDir + '/sitenav.json', function(data){
 
@@ -33,8 +34,11 @@ gulp.task('generate-pages', function(done){
 
 			//get a list of all pages
 			getPagesList(data.items[0], function(){
+
+				//load the html template
 				getTemplate(function(){
-					//make all the pages from a template
+
+					//make all the pages
 					for (var j = 0; j < PAGES.length; j++) {
 						createPage(PAGES[j], function(){
 							if (complete === (PAGES.length)) {
@@ -46,9 +50,6 @@ gulp.task('generate-pages', function(done){
 			});
 		});
 	});
-
-
-
 
 
 	/**
@@ -64,6 +65,10 @@ gulp.task('generate-pages', function(done){
 		});
 	}
 
+	/**
+	 * get the index template
+	 * @param cb
+	 */
 	function getTemplate(cb) {
 
 		var template_file = './index_template.html',
@@ -71,11 +76,11 @@ gulp.task('generate-pages', function(done){
 
 		utils.logMsg('using template ' + template_file);
 
-		try {
+		try { //see if there's a site-level template
 			template = opts.fs.readFileSync(template_file, {encoding: 'utf8'}).toString();
 			cb();
 		}
-		catch(err) {
+		catch(err) { //otherwise use default
 			utils.logErr('Project-specific template not found at ' + template_file);
 			utils.logMsg('using default template ' + template_file_default + '\n');
 
@@ -99,13 +104,13 @@ gulp.task('generate-pages', function(done){
 			outputPath;
 
 		if (page === '/') {
-			outputPath = '/index';
+			outputPath = '/';
 		}
 		else {
-			outputPath = '/' + page + 'index';
+			outputPath = '/' + page;
 		}
 
-		getJSON(dest + opts.paths.jsonDir + outputPath + '.json', function(data){
+		getJSON(dest + opts.paths.jsonDir + outputPath + 'index.json', function(data){
 
 			var file, level, relpath, contents, pageData;
 
@@ -115,7 +120,7 @@ gulp.task('generate-pages', function(done){
 				pageData.chat_script = '';
 			}
 
-			file = dest + outputPath + '.html';
+			file = dest + outputPath + 'index.html';
 			level = outputPath === '/' ? 0 : (outputPath.split('/')).length - 1;
 			relpath = function() {
 				var str = '';
@@ -124,8 +129,6 @@ gulp.task('generate-pages', function(done){
 				}
 				return str;
 			};
-
-			var reference = JSON.stringify({siteData: siteData, pageData: pageData});
 
 			// populate some stuff in each page
 			contents = compiled({
@@ -150,8 +153,9 @@ gulp.task('generate-pages', function(done){
 	}
 
 	/**
-	 * figure out top-level and sub-level pages to get site structure
+	 * figure out top-level and sub-level pages to get site structure and return a flat array of all pages
 	 * @param item object from sitenav that contains all the stuff we want
+	 * @param cb
 	 */
 	function getPagesList(item, cb) {
 

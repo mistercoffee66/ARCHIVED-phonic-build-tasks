@@ -6,11 +6,19 @@ var gulp = require('gulp'),
 
 packages.requireDir(__dirname + '/gulp_components/tasks');
 
+gulp.task('setup', gulp.series(
+		'set-build-directory:dev',
+		'get-json',
+		'generate-pages'
+));
+
 gulp.task('dev', gulp.series(
 		'set-build-directory:dev',
-		'app-config',
-		'wiredep',
-		'ng-templates',
+		gulp.parallel(
+				'app-config',
+				'wiredep',
+				'ng-templates'
+		),
 		gulp.parallel(
 				'concat-js:dev',
 				'less:dev',
@@ -20,10 +28,23 @@ gulp.task('dev', gulp.series(
 		'serve'
 ));
 
-gulp.task('setup', gulp.series(
-		'set-build-directory:dev',
+gulp.task('dist', gulp.series(
+		'set-build-directory:dist',
 		'get-json',
-		'generate-pages'
+		'generate-pages',
+		gulp.parallel(
+				'app-config',
+				'wiredep',
+				'ng-templates'
+		),
+		gulp.parallel(
+				'concat-js:dist',
+				'less:dist',
+				'images:dist',
+				'static-assets'
+		),
+		'serve'
+		//,'seo'
 ));
 
 gulp.task('default',gulp.series('dev'));

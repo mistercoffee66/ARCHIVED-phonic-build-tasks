@@ -32,10 +32,12 @@ gulp.task('get-json', function(done){
 			return false;
 		}
 
+		//get a list of all pages
 		getPagesList(data.items[0], function(){
 
 			for (var j = 0; j < PAGES.length; j++) {
 
+				//get json for each page
 				doRequest(host + '/_design/site/_view/by_url?key=["'+ (j === 0 ? '/' : PAGES[j]) + '","' + opts.config.localeStr + '"]&include_docs=true', PAGES[j], function(data){
 
 					if (complete === (PAGES.length)) {
@@ -46,6 +48,12 @@ gulp.task('get-json', function(done){
 		});
 	});
 
+	/**
+	 * get json from api and save to filesystem
+	 * @param dataUrl
+	 * @param page
+	 * @param cb
+	 */
 	function doRequest(dataUrl, page, cb) {
 
 		var outputPath;
@@ -100,6 +108,11 @@ gulp.task('get-json', function(done){
 
 	}
 
+	/**
+	 * figure out top-level and sub-level pages to get site structure and return a flat array of all pages
+	 * @param item object from sitenav that contains all the stuff we want
+	 * @param cb
+	 */
 	function getPagesList(item, cb) {
 
 		//get an item's children and put them in PAGES array
