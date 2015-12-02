@@ -9,7 +9,7 @@ var gulp = require('gulp'),
 		utils = require('../utils');
 
 gulp.task('ng-templates',function(){
-	utils.logMsg('\n*****' + 'begin ng-templates' + '*****\n');
+	utils.logImportant('begin ng-templates');
 
 	var dest = process.env.buildDirectory || opts.paths.tmp;
 

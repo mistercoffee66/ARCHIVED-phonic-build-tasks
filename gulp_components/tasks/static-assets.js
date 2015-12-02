@@ -12,6 +12,8 @@ gulp.task('static-assets',function(){
 
 	var dest = process.env.buildDirectory || opts.paths.tmp;
 
+	utils.logImportant('begin static-assets');
+
 	return gulp.src(opts.paths.src + opts.paths.staticAssetsDir + '/**/*')
 			.pipe(gulp.dest(dest + opts.paths.staticAssetsDir));
 });

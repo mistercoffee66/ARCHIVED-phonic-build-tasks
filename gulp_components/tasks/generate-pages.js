@@ -9,7 +9,7 @@ var gulp = require('gulp'),
 		_ = packages.lodash;
 
 gulp.task('generate-pages', function(done){
-	utils.logMsg('\n*****' + 'begin generate-pages task' + '*****\n');
+	utils.logImportant('begin generate-pages task');
 
 	var dest = process.env.buildDirectory || opts.paths.tmp,
 			PAGES = ['/'],//this array represents all the desired json files, starting w the homepage
@@ -82,7 +82,7 @@ gulp.task('generate-pages', function(done){
 		}
 		catch(err) { //otherwise use default
 			utils.logErr('Project-specific template not found at ' + template_file);
-			utils.logMsg('using default template ' + template_file_default + '\n');
+			utils.logMsg('using default template ' + template_file_default + '');
 
 			try {
 				template = opts.fs.readFileSync(template_file_default, {encoding: 'utf8'}).toString();

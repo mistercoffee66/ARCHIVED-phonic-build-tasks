@@ -8,7 +8,7 @@ gulp.task('less:dev', function() {
 
 	var dest = process.env.buildDirectory || opts.paths.tmp;
 
-	utils.logMsg('\n*****' + 'begin less' + '*****\n');
+	utils.logImportant('begin less:dev');
 
 	return gulp.src(opts.paths.src + opts.paths.lessDir + '/main.less')
 			.pipe(plugins.sourcemaps.init())
@@ -24,7 +24,7 @@ gulp.task('less:dist', function() {
 
 	var dest = process.env.buildDirectory || opts.paths.dist;
 
-	utils.logMsg('\n*****' + 'begin less' + '*****\n');
+	utils.logMsg('logImportant less:dist');
 
 	return gulp.src(opts.paths.src + opts.paths.lessDir + '/main.less')
 			.pipe(plugins.less({

@@ -10,7 +10,7 @@ var gulp = require('gulp'),
 
 gulp.task('app-config', function(done){
 
-	utils.logMsg('\n*****' + 'begin app-config' + '*****\n');
+	utils.logImportant('begin app-config');
 
 	var dest = process.env.buildDirectory || opts.paths.tmp;;
 
@@ -18,7 +18,7 @@ gulp.task('app-config', function(done){
 	str += 'App.constant("environment", ' + JSON.stringify(opts.config) + ');';
 	opts.fs.outputFile(dest + opts.paths.jsDir + '/app/environment-config.js', str, function(err){
 		if(err) throw err;
-		utils.logMsg('\nconfig file write completed\n');
+		utils.logMsg('config file write completed');
 		done();
 	});
 });

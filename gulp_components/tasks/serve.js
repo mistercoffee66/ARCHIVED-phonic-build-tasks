@@ -13,7 +13,13 @@ gulp.task('serve', function(done){
 		server: {
 			baseDir: dest
 		}
+	}, function(err, instance){
+		packages.nodeNotifier.notify({
+			'title': 'Phonic',
+			'message': 'Browser-sync listening on port ' + instance.options.get('port')
+		});
 	});
+
 
 	if (dest !== opts.paths.dist) {
 		gulp.watch(

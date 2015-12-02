@@ -10,7 +10,7 @@ var gulp = require('gulp'),
 
 gulp.task('images:dev',function(){
 
-	utils.logMsg('\n*****' + 'begin images' + '*****\n');
+	utils.logImportant('begin images:dev task');
 
 	var dest = process.env.buildDirectory || opts.paths.tmp;
 
@@ -48,12 +48,12 @@ gulp.task('images:dist:gif',function(){
 });
 
 gulp.task('images:dist', gulp.series(
+		function(done){
+			utils.logImportant('begin images:dist task');
+			done();
+		},
 		gulp.parallel(
 				'images:dist:noGif',
 				'images:dist:gif'
-		),
-		function(done){
-			utils.logMsg('\n*****' + 'begin images' + '*****\n');
-			done();
-		}
+		)
 ));

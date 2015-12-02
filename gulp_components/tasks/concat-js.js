@@ -83,24 +83,24 @@ gulp.task('concat-js:cleanup',function(done){
 });
 
 gulp.task('concat-js:dev', gulp.series(
+	function(done){
+		utils.logImportant('begin concat-js:dev');
+		done();
+	},
 	gulp.parallel(
 		'concat-js:dev:lib',
 		'concat-js:dev:app'
-	),
-	function(done){
-		utils.logMsg('\n*****' + 'begin concat-js' + '*****\n');
-		done();
-	}
+	)
 ));
 
 gulp.task('concat-js:dist', gulp.series(
+		function(done){
+			utils.logImportant('begin concat-js:dist');
+			done();
+		},
 		gulp.parallel(
 				'concat-js:dist:lib',
 				'concat-js:dist:app'
 		),
-		'concat-js:cleanup',
-		function(done){
-			utils.logMsg('\n*****' + 'begin concat-js' + '*****\n');
-			done();
-		}
+		'concat-js:cleanup'
 ));

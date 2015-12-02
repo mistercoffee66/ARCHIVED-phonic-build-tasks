@@ -10,7 +10,7 @@ var gulp = require('gulp'),
 
 gulp.task('wiredep', function() {
 
-	utils.logMsg('\n*****' + 'begin wiredep task' + '*****\n');
+	utils.logImportant('begin wiredep task');
 
 	var dest = process.env.buildDirectory || opts.paths.tmp;
 
