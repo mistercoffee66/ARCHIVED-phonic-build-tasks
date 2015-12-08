@@ -1,29 +1,20 @@
 var system = require('system'),
 		page = require('webpage').create(),
 		fs = require('fs'),
-		config = require('../../config'),
-		env, host, body, fileName, text, ready, t, c, i= 0, path;
+		//config = require('../../config'),
+		host, body, fileName, text, ready, t, path;
 
-if (system.args[1] === 'stage') {
-	page.settings.userName = 'ogilvy';
-	page.settings.password = 'd1g1t@l';
-	env = 'stage';
-}
-else {
-	env = 'prod';
-}
-
-if (system.args[2] && system.args[2].length > 0) {
+if (system.args[1] && system.args[2]) {
+	host = system.args[1];
 	fileName = system.args[2];
 	path = system.args[2] === '/' ? '' : '/' + system.args[2];
+	getHtml();
 }
 else {
 	console.log('[phantomjs log]' + ' ' + 'No path supplied!');
 	phantom.exit();
 }
 
-host = config.siteUrl[env];
-getHtml();
 
 function getHtml() {
 	//var c = 0;
@@ -43,7 +34,7 @@ function getHtml() {
 			if (ready) {
 				clearInterval(t);
 				body = page.evaluate(function() {
-					return document.getElementById('ibm-content-main');
+					return document.getElementById('layout');
 				});
 				text = body.innerHTML.replace(/<script[^>]*>([\s\S]*?)<\/script>/gm,'');
 
@@ -58,7 +49,7 @@ function getHtml() {
 				phantom.exit();
 			}
 			else {
-				console.log('[phantomjs log]' + ' ' + fileName + ' page timeout, page not executing properly or can\'t find #layout, exiting incomplete... \n');
+				console.log('[phantomjs log]' + ' ' + host + path + ' page timeout, page not executing properly or can\'t find #layout, exiting incomplete... \n');
 				clearInterval(t);
 				phantom.exit();
 			}

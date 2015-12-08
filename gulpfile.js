@@ -5,6 +5,10 @@ var gulp = require('gulp'),
 		utils = require('./gulp_components/utils');
 
 packages.requireDir(__dirname + '/gulp_components/tasks');
+console.log(packages.requireDir(__dirname + '/gulp_components/tasks'));
+
+//var serve = require(__dirname + '/gulp_components/tasks/serve');
+//console.log(serve.port);
 
 gulp.task('setup', gulp.series(
 		'set-build-directory:dev',
@@ -43,8 +47,15 @@ gulp.task('dist', gulp.series(
 				'images:dist',
 				'static-assets'
 		),
-		'serve'
-		//,'seo'
+		'serve',
+		'seo',
+		function(done) {
+			packages.nodeNotifier.notify({
+				'title': 'Phonic',
+				'message': 'Dist build complete'
+			});
+			done();
+		}
 ));
 
 gulp.task('default',gulp.series('dev'));

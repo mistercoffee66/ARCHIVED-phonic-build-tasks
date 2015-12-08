@@ -115,7 +115,7 @@ gulp.task('generate-pages', function(done){
 			var file, level, relpath, contents, pageData;
 
 			pageData = data.rows[0].doc;
-
+			//pageData.locations = filterPageData(data.rows[0].doc.locations);
 			if (typeof pageData.chat_enabled === 'undefined' || pageData.chat_enabled !== 'true' ) {
 				pageData.chat_script = '';
 			}
@@ -136,10 +136,11 @@ gulp.task('generate-pages', function(done){
 					path: outputPath,
 					relpath: relpath(),
 					pageData: pageData,
-					siteData: siteData,
-					reference_config: JSON.stringify({config: opts.config}),
-					reference_siteData: JSON.stringify({siteData: siteData}),
-					reference_pageData: JSON.stringify({pageData: pageData})
+					siteData: siteData
+					//,
+					//reference_config: JSON.stringify({config: opts.config}),
+					//reference_siteData: JSON.stringify({siteData: siteData}),
+					//reference_pageData: JSON.stringify({siteData: pageData})
 				}
 			});
 
@@ -172,5 +173,104 @@ gulp.task('generate-pages', function(done){
 		if (cb) {
 			cb();
 		}
+	}
+
+	/**
+	 * filter locations just like front-end app
+	 * @param locations
+	 * @returns {Array}
+	 */
+	function filterPageData(locations) {
+
+		var locationsArray = toArray(locations);
+
+		var filteredLocations = [],
+				match = false;
+
+		for (var i = 0; i < locationsArray.length; i++) {
+
+			var location = locationsArray[i],
+					locationName = location.$key,
+					filteredItems = [];
+
+			for (var j = 0; j < location.length; j++) {
+
+				var locationItem = location[j];
+				//console.log(location);
+
+				if (typeof locationItem.filters === 'undefined' || isEmpty(locationItem.filters)) {
+
+					match = true;
+				}
+				else {
+					for (var key in locationItem.filters) {
+
+						if (locationItem.filters.hasOwnProperty(key)) {
+
+							if (locationItem.filters[key].length < 1 || locationItem.filters[key] === 'all') {
+								match = true;
+							}
+							else {
+								match = false;
+								break;
+							}
+						}
+					} // end filter loop
+				}
+
+				//console.log('match is ' + match);
+
+				if (match) { // add matching items to this location
+					filteredItems.push(location[j]);
+				}
+
+			} // end items loop
+
+			if (filteredItems.length > 0) { // if the location has matching items, add them to the set
+
+				filteredItems.$key = locationName;
+				filteredLocations.push(filteredItems);
+			}
+		}
+
+		return filteredLocations;
+
+	}
+
+	/**
+	 * see if an obj is empty
+	 * @param object
+	 * @returns {boolean}
+	 */
+	function isEmpty(object) {
+		for(var key in object) {
+			if(object.hasOwnProperty(key)){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * convert obj to array for when you want to preserve key order
+	 * @param obj
+	 * @returns {*}
+	 */
+	function toArray(obj) {
+		if (!(obj instanceof Object)) {
+			return obj;
+		}
+		var result = [];
+
+		for (var key in obj) {
+			if (obj.hasOwnProperty(key)) {
+				//console.log(key);
+				obj[key].$key = key;
+				result.push(obj[key]);
+			}
+
+		}
+		//console.log(result);
+		return result;
 	}
 });

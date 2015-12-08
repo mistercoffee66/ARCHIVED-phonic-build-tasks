@@ -6,6 +6,8 @@
 <head>
     <meta charset="utf-8"/>
 
+    <!--data from page generation:-->
+
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" href="//www.ibm.com/favicon.ico" />
@@ -75,7 +77,14 @@
 
     <!-- MASTHEAD_BEGIN -->
     <div id="ibm-masthead" role="banner" aria-label="IBM">
+        <div id="ibm-mast-options">
+            <ul role="toolbar" aria-labelledby="ibm-masthead">
+                <li id="ibm-geo" role="presentation"><a href="http://www.ibm.com/planetwide/select/selector.html" role="button" aria-label="United States selected - Choose a country">United States</a></li>
+                <li id="ibm-language" role="presentation"><span class="ibm-active" role="button" aria-disabled="true">English</span> <a href="http://www.ibm.com/us/en/" lang="en-US" role="button">English</a></li>
+            </ul>
+        </div>
         <div id="ibm-universal-nav">
+
             <nav role="navigation" aria-label="IBM">
                 <div id="ibm-home"><a href="http://www.ibm.com/us/en/">IBM®</a></div>
                 <ul id="ibm-menu-links" role="toolbar" aria-label="Site map">
@@ -97,15 +106,32 @@
                 </form>
             </div>
         </div>
-
     </div>
-
     <!-- MASTHEAD_END -->
 
 
     <div id="ibm-content-wrapper">
 
-        <div get-template="layout/layout" id="layout"></div>
+        <div get-template="layout/layout" id="layout">
+            <%_.forEach(generatePage.pageData.locations, function(items,location) {
+            _.forEach(items,function(item){
+            %>
+            <h1>${item.title}</h1>
+            <h1>${item.sub_title}</h1>
+            <div>${item.description}</div>
+            <a href="${item.cta_url}">${item.cta_label}</a>
+            <%
+            _.forEach(item.list.items,function(listItem){
+            %>
+            <h1>${listItem.title}</h1>
+            <h1>${listItem.sub_title}</h1>
+            <div>${listItem.description}</div>
+            <a href="${listItem.cta_url}">${listItem.cta_label}</a>
+            <%
+            });
+            });
+            }); %>
+        </div>
 
     </div>
 

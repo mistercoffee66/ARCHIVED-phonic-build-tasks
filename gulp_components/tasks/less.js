@@ -24,7 +24,7 @@ gulp.task('less:dist', function() {
 
 	var dest = process.env.buildDirectory || opts.paths.dist;
 
-	utils.logMsg('logImportant less:dist');
+	utils.logImportant('begin less:dist');
 
 	return gulp.src(opts.paths.src + opts.paths.lessDir + '/main.less')
 			.pipe(plugins.less({

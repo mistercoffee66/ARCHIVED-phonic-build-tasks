@@ -14,10 +14,12 @@ gulp.task('serve', function(done){
 			baseDir: dest
 		}
 	}, function(err, instance){
+		process.env.bsPort = instance.options.get('port');
 		packages.nodeNotifier.notify({
 			'title': 'Phonic',
-			'message': 'Browser-sync listening on port ' + instance.options.get('port')
+			'message': 'Serving ' + process.cwd() + dest
 		});
+		done();
 	});
 
 
@@ -50,13 +52,4 @@ gulp.task('serve', function(done){
 				browserSync.reload
 		));
 	}
-
-	else {
-		gulp.watch(
-				opts.paths.dist + '/**/*.html',
-				browserSync.reload
-		);
-	}
-
-	done();
 });
