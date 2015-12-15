@@ -25,6 +25,13 @@ gulp.task('serve', function(done){
 
 	if (dest !== opts.paths.dist) {
 		gulp.watch(
+			'./config.js',
+			gulp.series(
+				'app-config',
+				'concat-js:dev:app',
+				browserSync.reload
+			));
+		gulp.watch(
 			opts.paths.src + '/**/*.less',
 			gulp.series(
 				'less:dev',
