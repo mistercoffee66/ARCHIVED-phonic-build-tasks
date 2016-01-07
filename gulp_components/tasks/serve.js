@@ -30,7 +30,7 @@ gulp.task('serve', function(done){
 				'app-config',
 				'concat-js:dev:app',
 				browserSync.reload
-			));
+		));
 		gulp.watch(
 			opts.paths.src + '/**/*.less',
 			gulp.series(
@@ -57,6 +57,12 @@ gulp.task('serve', function(done){
 				'ng-templates',
 				'concat-js:dev:app',
 				browserSync.reload
+		));
+		gulp.watch(
+			opts.paths.src + opts.paths.imgDir + '/**/*',
+			gulp.series(
+					'images:dev',
+					browserSync.reload
 		));
 	}
 });
