@@ -8,7 +8,7 @@ module.exports = {
 		tmp: './tmp',
 		dist: './dist',
 		cssDir: '/css',
-		imgDir: '/img',
+		imgDir: '/i',
 		jsDir: '/js',
 		jsonDir: '/json',
 		lessDir : '/less',
