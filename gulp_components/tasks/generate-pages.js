@@ -136,11 +136,8 @@ gulp.task('generate-pages', function(done){
 					path: outputPath,
 					relpath: relpath(),
 					pageData: pageData,
-					siteData: siteData
-					//,
-					//reference_config: JSON.stringify({config: opts.config}),
-					//reference_siteData: JSON.stringify({siteData: siteData}),
-					//reference_pageData: JSON.stringify({siteData: pageData})
+					siteData: siteData,
+					config: opts.config
 				}
 			});
 
