@@ -122,8 +122,8 @@ gulp.task('generate-pages', function(done){
 
 			file = dest + outputPath + 'index.html';
 			level = _.filter(outputPath.split('/'), function(i) {
- +				return !_.isEmpty(i);
- +			}).length;
+				return !_.isEmpty(i);
+			}).length;
 			relpath = function() {
 				var str = '';
 				for (var i = 0; i < level; i++) {
